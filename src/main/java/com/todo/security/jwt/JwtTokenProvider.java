@@ -1,9 +1,8 @@
-package com.todo.jwt;
+package com.todo.security.jwt;
 
 import static com.todo.exception.ErrorCode.INVALID_TOKEN;
 
 import com.todo.exception.CustomException;
-import com.todo.util.RefreshTokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -88,11 +87,13 @@ public class JwtTokenProvider {
 
   public boolean validateRefreshToken(String email, String refreshToken) {
 
-    if (!validateToken(refreshToken)) {
+    boolean valid = validateToken(refreshToken);
+
+    if (!valid) {
       return false;
     }
 
     String storedToken = refreshTokenService.getRefreshToken(email);
-    return storedToken != null && storedToken.equals(refreshToken) && validateToken(refreshToken);
+    return storedToken != null && storedToken.equals(refreshToken);
   }
 }

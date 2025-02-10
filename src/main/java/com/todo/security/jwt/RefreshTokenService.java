@@ -1,20 +1,24 @@
-package com.todo.util;
+package com.todo.security.jwt;
 
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class RefreshTokenService {
 
   private final StringRedisTemplate redisTemplate;
 
-  private static final long REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 7;
+  @Value("${jwt.refresh.expiration}")
+  private long refreshTokenExpire;
 
   public void saveRefreshToken(String email, String refreshToken) {
-    redisTemplate.opsForValue().set(email, refreshToken, REFRESH_TOKEN_EXPIRE, TimeUnit.SECONDS);
+    redisTemplate.opsForValue().set(email, refreshToken, refreshTokenExpire, TimeUnit.SECONDS);
   }
 
   public String getRefreshToken(String email) {
@@ -22,6 +26,8 @@ public class RefreshTokenService {
   }
 
   public void deleteRefreshToken(String email) {
-    redisTemplate.delete(email);
+    Boolean result = redisTemplate.delete(email);
+
+    log.info("delete refresh token for {}: result = {}", email, result);
   }
 }

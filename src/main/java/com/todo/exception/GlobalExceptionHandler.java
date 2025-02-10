@@ -5,13 +5,16 @@ import static com.todo.exception.ErrorCode.REQUEST_VALIDATION_FAIL;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 @Slf4j
 @RestControllerAdvice
@@ -63,6 +66,31 @@ public class GlobalExceptionHandler {
     log.error("ConstraintViolationException: {}, Request URI: {}", errorMessage, requestUri);
 
     return ResponseEntity.status(BAD_REQUEST).body(response);
+  }
+
+  @ExceptionHandler(HandlerMethodValidationException.class)
+  public ResponseEntity<ErrorResponse> handleMethodValidationException(ConstraintViolationException e) {
+
+    String errorMessage = e.getConstraintViolations()
+        .stream()
+        .map(ConstraintViolation::getMessage)
+        .collect(Collectors.joining(", "));
+
+    ErrorResponse response = ErrorResponse.withMessage(REQUEST_VALIDATION_FAIL, errorMessage);
+
+    log.error("HandlerMethodValidationException: {}", errorMessage);
+
+    return ResponseEntity.status(BAD_REQUEST).body(response);
+  }
+
+  @ExceptionHandler(IllegalStateException.class)
+  public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
+
+    ErrorResponse response = ErrorResponse.withMessage(INTERNAL_SERVER_ERROR, e.getMessage());
+
+    log.error("IllegalStateException: {}", e.getMessage(), e);
+
+    return ResponseEntity.status(INTERNAL_SERVER_ERROR.getHttpStatus()).body(response);
   }
 
   @ExceptionHandler(AsyncRequestTimeoutException.class)

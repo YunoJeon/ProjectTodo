@@ -1,4 +1,4 @@
-package com.todo.config;
+package com.todo.security.authentication;
 
 import static com.todo.exception.ErrorCode.INVALID_CREDENTIALS;
 
@@ -33,7 +33,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
       throw new CustomException(INVALID_CREDENTIALS);
     }
 
-    return new UsernamePasswordAuthenticationToken(email, null, user.getAuthorities());
+    return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
   }
 
   @Override

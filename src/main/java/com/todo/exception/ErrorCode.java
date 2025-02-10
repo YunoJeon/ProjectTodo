@@ -26,6 +26,7 @@ public enum ErrorCode {
   // 408 REQUEST TIMEOUT
 
   // 409 CONFLICT
+  ALREADY_EXISTS_EMAIL(CONFLICT, "이미 존재하는 메일입니다."),
 
   // 500 INTERNAL SEVER ERROR
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");
