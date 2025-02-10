@@ -51,7 +51,7 @@ public class LoggingAspect {
 
       String requestBody = getRequestBody(requestWrapper);
       if (requestBody != null && !requestBody.isEmpty()) {
-        params.putAll(parseeBodyToMap(requestBody));
+        params.putAll(parseBodyToMap(requestBody));
       }
     } catch (Exception e) {
       log.error("LoggerAspect error", e);
@@ -121,7 +121,7 @@ public class LoggingAspect {
     return null;
   }
 
-  private Map<String, Object> parseeBodyToMap(String body) {
+  private Map<String, Object> parseBodyToMap(String body) {
 
     Map<String, Object> bodyParams = new HashMap<>();
 

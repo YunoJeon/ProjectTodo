@@ -1,4 +1,4 @@
-package com.todo.jwt;
+package com.todo.security.jwt;
 
 import com.todo.exception.CustomException;
 import jakarta.servlet.FilterChain;
@@ -41,8 +41,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
           String email = jwtTokenProvider.getEmail(token);
           UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-          UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-              userDetails, null, userDetails.getAuthorities());
+          UsernamePasswordAuthenticationToken authentication =
+              new UsernamePasswordAuthenticationToken(userDetails, null,
+                  userDetails.getAuthorities());
 
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
