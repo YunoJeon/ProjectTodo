@@ -59,4 +59,13 @@ public class User {
         .profileImageUrl(authDto.profileImageUrl())
         .build();
   }
+
+  public void updatePassword(String newPassword) {
+
+    password = newPassword;
+  }
+
+  public void updateProfileImage(String newImageUrl) {
+    profileImageUrl = newImageUrl;
+  }
 }

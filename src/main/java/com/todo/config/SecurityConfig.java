@@ -31,7 +31,10 @@ public class SecurityConfig {
                 "/api/auth/check-email",
                 "/api/auth/sign-in",
                 "/api/auth/refresh",
-                "/api/auth/sign-out").permitAll()
+                "/api/auth/sign-out",
+                "/api/images/profile/upload",
+                "/uploads/**",
+                "/api/users/info/**").permitAll()
             .anyRequest().authenticated())
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
