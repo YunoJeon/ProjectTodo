@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.todo.todo.mapper.TodoMapper">
+  <resultMap id="TodoResultMap" type="com.todo.todo.entity.Todo">
+    <id property="id" column="id"/>
+    <result property="projectId" column="project_id"/>
+    <result property="title" column="title"/>
+    <result property="description" column="description"/>
+    <result property="todoCategory" column="todo_category" javaType="com.todo.todo.type.TodoCategory"/>
+    <result property="isCompleted" column="is_completed"/>
+    <result property="isPriority" column="is_priority"/>
+    <result property="version" column="version"/>
+    <result property="dueDate" column="due_date"/>
+    <result property="createdAt" column="created_at"/>
+
+    <association property="author" javaType="com.todo.user.entity.User" column="id">
+      <id property="id" column="author_id"/>
+    </association>
+  </resultMap>
+  <select id="filterTodos" parameterType="com.todo.todo.dto.TodoFilterRequestDto" resultMap="TodoResultMap">
+    SELECT
+    t.id,
+    t.project_id,
+    t.title,
+    t.description,
+    t.todo_category,
+    t.is_completed,
+    t.is_priority,
+    t.version,
+    t.due_date,
+    t.created_at,
+    u.id as author_id
+    FROM todos t
+    LEFT JOIN users u ON t.author_id = u.id
+    <where>
+      AND author_id = #{authorId}
+      <if test="todoCategory != null">
+        AND todo_category = #{todoCategory}
+      </if>
+      <if test="isPriority != null">
+        AND is_priority = #{isPriority}
+      </if>
+      <if test="isCompleted != null">
+        AND is_completed = #{isCompleted}
+      </if>
+    </where>
+    ORDER BY t.created_at ASC
+  </select>
+</mapper>
