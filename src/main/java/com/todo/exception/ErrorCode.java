@@ -23,6 +23,7 @@ public enum ErrorCode {
   // 404 NOT FOUND
   USER_NOT_FOUND(NOT_FOUND, "회원을 찾을 수 없습니다."),
   TODO_NOT_FOUND(NOT_FOUND, "할일을 찾을 수 없습니다."),
+  PROJECT_NOT_FOUND(NOT_FOUND, "프로젝트를 찾을 수 없습니다."),
 
   // 408 REQUEST TIMEOUT
 

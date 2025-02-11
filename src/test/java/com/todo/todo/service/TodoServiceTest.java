@@ -107,7 +107,7 @@ class TodoServiceTest {
     when(todoMapper.filterTodos(any(TodoFilterRequestDto.class))).thenReturn(todoList);
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
     // when
-    PageInfo<TodoFilterResponseDto> pageInfo = todoService.getTodos(auth, INDIVIDUAL, false, false,
+    PageInfo<TodoFilterResponseDto> pageInfo = todoService.getTodos(auth, null, INDIVIDUAL, false, false,
         1, 10);
     // then
     assertEquals(todo.getId(), pageInfo.getList().get(0).id());
