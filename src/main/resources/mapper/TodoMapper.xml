@@ -15,7 +15,7 @@
     <result property="dueDate" column="due_date"/>
     <result property="createdAt" column="created_at"/>
 
-    <association property="author" javaType="com.todo.user.entity.User" column="id">
+    <association property="author" javaType="com.todo.user.entity.User" column="author_id">
       <id property="id" column="author_id"/>
     </association>
   </resultMap>
@@ -35,9 +35,9 @@
     FROM todos t
     LEFT JOIN users u ON t.author_id = u.id
     <where>
-      AND author_id = #{authorId}
+      AND t.author_id = #{authorId}
       <if test="projectId != null">
-        AND t.project_id = #{projcetId}
+        AND t.project_id = #{projectId}
       </if>
       <if test="todoCategory != null">
         AND t.todo_category = #{todoCategory}
@@ -49,6 +49,22 @@
         AND t.is_completed = #{isCompleted}
       </if>
     </where>
-    ORDER BY t.created_at ASC
+  </select>
+
+  <select id="searchTodosByTitle" parameterType="String" resultMap="TodoResultMap">
+    SELECT t.id,
+           t.project_id,
+           t.title,
+           t.description,
+           t.todo_category,
+           t.is_completed,
+           t.is_priority,
+           t.version,
+           t.due_date,
+           t.created_at,
+           u.id as author_id
+    FROM todos t
+           LEFT JOIN users u ON t.author_id = u.id
+    WHERE t.title LIKE CONCAT('%', #{keyword}, '%')
   </select>
 </mapper>
