@@ -48,13 +48,14 @@ public class TodoService {
   }
 
   public PageInfo<TodoFilterResponseDto> getTodos(Authentication auth,
-      TodoCategory todoCategory, Boolean isPriority, Boolean isCompleted,
+      Long projectId, TodoCategory todoCategory, Boolean isPriority, Boolean isCompleted,
       int page, int pageSize) {
 
     Long authorId = userQueryService.findByEmail(auth.getName()).getId();
 
     TodoFilterRequestDto todoFilterRequestDto = new TodoFilterRequestDto(
         authorId,
+        projectId,
         todoCategory,
         isPriority,
         isCompleted);
