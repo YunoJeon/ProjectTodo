@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 
 import com.github.pagehelper.PageInfo;
 import com.todo.exception.CustomException;
+import com.todo.project.entity.Project;
+import com.todo.project.service.ProjectQueryService;
 import com.todo.todo.dto.TodoDto;
 import com.todo.todo.dto.TodoFilterRequestDto;
 import com.todo.todo.dto.TodoFilterResponseDto;
@@ -52,6 +54,9 @@ class TodoServiceTest {
   private TodoMapper todoMapper;
 
   @Mock
+  private ProjectQueryService projectQueryService;
+
+  @Mock
   private EntityManager entityManager;
 
   @InjectMocks
@@ -60,6 +65,7 @@ class TodoServiceTest {
   private Authentication auth;
   private User testUser;
   private Todo todo;
+  private Project project;
 
   @BeforeEach
   void setUp() {
@@ -84,6 +90,12 @@ class TodoServiceTest {
         .createdAt(LocalDateTime.now())
         .build();
 
+    project = Project.builder()
+        .id(2L)
+        .owner(testUser)
+        .name("프로젝트")
+        .build();
+
     ReflectionTestUtils.setField(todoService, "entityManager", entityManager);
   }
 
@@ -91,8 +103,9 @@ class TodoServiceTest {
   @DisplayName("할일 생성이 성공한다")
   void create_todo_success() {
     // given
-    TodoDto todoDto = new TodoDto(2L, "할일", "설명", WORK, true, LocalDateTime.now());
+    TodoDto todoDto = new TodoDto(project.getId(), "할일", "설명", WORK, true, LocalDateTime.now());
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
+    when(projectQueryService.findById(project.getId())).thenReturn(project);
     // when
     todoService.createTodo(auth, todoDto);
     // then
@@ -128,7 +141,7 @@ class TodoServiceTest {
   }
 
   @Test
-  @DisplayName("작성자가 아니면 할일 상세 조회가 실패한다")
+  @DisplayName("작성자 또는 협업자가 아니면 할일 상세 조회가 실패한다")
   void get_todo_detail_failure_forbidden() {
     // given
     User otherUser = User.builder().id(2L).email("other@email.com").build();

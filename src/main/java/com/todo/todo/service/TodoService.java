@@ -1,11 +1,15 @@
 package com.todo.todo.service;
 
+import static com.todo.collaborator.type.RoleType.EDITOR;
 import static com.todo.exception.ErrorCode.FORBIDDEN;
 import static com.todo.exception.ErrorCode.VERSION_CONFLICT;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.exception.CustomException;
+import com.todo.project.entity.Project;
+import com.todo.project.service.ProjectQueryService;
 import com.todo.todo.dto.TodoDto;
 import com.todo.todo.dto.TodoFilterRequestDto;
 import com.todo.todo.dto.TodoFilterResponseDto;
@@ -15,6 +19,7 @@ import com.todo.todo.entity.Todo;
 import com.todo.todo.mapper.TodoMapper;
 import com.todo.todo.repository.TodoRepository;
 import com.todo.todo.type.TodoCategory;
+import com.todo.user.entity.User;
 import com.todo.user.service.UserQueryService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.OptimisticLockException;
@@ -36,6 +41,10 @@ public class TodoService {
 
   private final TodoQueryService todoQueryService;
 
+  private final ProjectQueryService projectQueryService;
+
+  private final CollaboratorQueryService collaboratorQueryService;
+
   private final TodoMapper todoMapper;
 
   @PersistenceContext
@@ -44,17 +53,42 @@ public class TodoService {
   @Transactional
   public void createTodo(Authentication auth, TodoDto todoDto) {
 
-    todoRepository.save(Todo.of(userQueryService.findByEmail(auth.getName()), todoDto));
+    User user = userQueryService.findByEmail(auth.getName());
+
+    if (todoDto.projectId() != null) {
+
+      Project project = projectQueryService.findById(todoDto.projectId());
+
+      validEditorCollaborator(project, user);
+
+      todoRepository.save(Todo.of(user, todoDto));
+    } else {
+
+      todoRepository.save(Todo.of(user, todoDto));
+    }
   }
 
   public PageInfo<TodoFilterResponseDto> getTodos(Authentication auth,
       Long projectId, TodoCategory todoCategory, Boolean isPriority, Boolean isCompleted,
       int page, int pageSize) {
 
-    Long authorId = userQueryService.findByEmail(auth.getName()).getId();
+    User user = userQueryService.findByEmail(auth.getName());
+
+    Long filterAuthorId;
+
+    if (projectId == null) {
+
+      filterAuthorId = user.getId();
+    } else {
+      Project project = projectQueryService.findById(projectId);
+
+      validCollaborator(project, user);
+
+      filterAuthorId = null;
+    }
 
     TodoFilterRequestDto todoFilterRequestDto = new TodoFilterRequestDto(
-        authorId,
+        filterAuthorId,
         projectId,
         todoCategory,
         isPriority,
@@ -79,12 +113,20 @@ public class TodoService {
 
   public TodoResponseDto getTodoDetail(Authentication auth, Long todoId) {
 
-    Long authorId = userQueryService.findByEmail(auth.getName()).getId();
+    User user = userQueryService.findByEmail(auth.getName());
 
     Todo todo = todoQueryService.findById(todoId);
 
-    if (!todo.getAuthor().getId().equals(authorId)) {
-      throw new CustomException(FORBIDDEN);
+    if (todo.getProjectId() != null) {
+
+      Project project = projectQueryService.findById(todo.getProjectId());
+      validCollaborator(project, user);
+    } else {
+
+      if (!todo.getAuthor().getId().equals(user.getId())) {
+
+        throw new CustomException(FORBIDDEN);
+      }
     }
 
     return TodoResponseDto.fromEntity(todo);
@@ -94,12 +136,14 @@ public class TodoService {
   public TodoResponseDto updateTodo(Authentication auth, Long todoId,
       TodoUpdateDto todoUpdateDto) {
 
-    Long authorId = userQueryService.findByEmail(auth.getName()).getId();
+    User user = userQueryService.findByEmail(auth.getName());
 
     Todo todo = todoQueryService.findById(todoId);
 
-    if (!todo.getAuthor().getId().equals(authorId)) {
-      throw new CustomException(FORBIDDEN);
+    if (!todo.getAuthor().getId().equals(user.getId())) {
+
+      Project project = projectQueryService.findById(todo.getProjectId());
+      validEditorCollaborator(project, user);
     }
 
     todo.update(todoUpdateDto);
@@ -109,6 +153,34 @@ public class TodoService {
       return TodoResponseDto.fromEntity(todo);
     } catch (OptimisticLockException e) {
       throw new CustomException(VERSION_CONFLICT);
+    }
+  }
+
+  private void validCollaborator(Project project, User user) {
+
+    if (project.getOwner().getId().equals(user.getId())) {
+      return;
+    }
+
+    boolean isConfirmed = collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
+        project, user, true);
+
+    if (!isConfirmed) {
+      throw new CustomException(FORBIDDEN);
+    }
+  }
+
+  private void validEditorCollaborator(Project project, User user) {
+
+    if (project.getOwner().getId().equals(user.getId())) {
+      return;
+    }
+
+    boolean isEditor = collaboratorQueryService.existsByProjectAndCollaboratorAndRoleTypeAndConfirmed(
+        project, user, EDITOR, true);
+
+    if (!isEditor) {
+      throw new CustomException(FORBIDDEN);
     }
   }
 }
