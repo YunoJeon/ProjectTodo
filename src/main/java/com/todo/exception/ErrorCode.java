@@ -24,12 +24,14 @@ public enum ErrorCode {
   USER_NOT_FOUND(NOT_FOUND, "회원을 찾을 수 없습니다."),
   TODO_NOT_FOUND(NOT_FOUND, "할일을 찾을 수 없습니다."),
   PROJECT_NOT_FOUND(NOT_FOUND, "프로젝트를 찾을 수 없습니다."),
+  COLLABORATOR_NOT_FOUND(NOT_FOUND, "협업자를 찾을 수 없습니다."),
 
   // 408 REQUEST TIMEOUT
 
   // 409 CONFLICT
   ALREADY_EXISTS_EMAIL(CONFLICT, "이미 존재하는 메일입니다."),
   VERSION_CONFLICT(CONFLICT, "동시성 충돌이 발생했습니다. 다시 시도해 주세요."),
+  ALREADY_EXISTS_USER(CONFLICT, "이미 초대된 회원입니다."),
 
   // 500 INTERNAL SEVER ERROR
   INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.");

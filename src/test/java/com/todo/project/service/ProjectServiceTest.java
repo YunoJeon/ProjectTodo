@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.exception.CustomException;
 import com.todo.project.dto.ProjectDto;
 import com.todo.project.dto.ProjectPageResponseDto;
@@ -41,6 +42,9 @@ class ProjectServiceTest {
 
   @Mock
   private ProjectQueryService projectQueryService;
+
+  @Mock
+  private CollaboratorQueryService collaboratorQueryService;
 
   @InjectMocks
   private ProjectService projectService;
