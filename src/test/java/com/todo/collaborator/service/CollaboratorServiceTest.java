@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.todo.activity.service.ActivityLogService;
 import com.todo.collaborator.dto.CollaboratorDto;
 import com.todo.collaborator.dto.CollaboratorsDto;
 import com.todo.collaborator.entity.Collaborator;
@@ -46,6 +47,9 @@ class CollaboratorServiceTest {
 
   @Mock
   private NotificationService notificationService;
+
+  @Mock
+  private ActivityLogService activityLogService;
 
   @InjectMocks
   private CollaboratorService collaboratorService;

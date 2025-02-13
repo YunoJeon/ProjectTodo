@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.pagehelper.PageInfo;
+import com.todo.activity.service.ActivityLogService;
 import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.exception.CustomException;
 import com.todo.notification.service.NotificationService;
@@ -66,6 +67,9 @@ class TodoServiceTest {
 
   @Mock
   private CollaboratorQueryService collaboratorQueryService;
+
+  @Mock
+  private ActivityLogService activityLogService;
 
   @InjectMocks
   private TodoService todoService;
