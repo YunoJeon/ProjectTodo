@@ -58,7 +58,7 @@ public class AuthController {
     Cookie refreshTokenCookie = new Cookie("refreshToken", tokens.get("refreshToken"));
     refreshTokenCookie.setHttpOnly(true);
     refreshTokenCookie.setSecure(true);
-    refreshTokenCookie.setPath("/api/auth");
+    refreshTokenCookie.setPath("/api/auth/refresh");
     refreshTokenCookie.setMaxAge(refreshTokenExpire);
     response.addCookie(refreshTokenCookie);
 
@@ -85,7 +85,7 @@ public class AuthController {
       Cookie refreshTokenCookie = new Cookie("refreshToken", null);
       refreshTokenCookie.setHttpOnly(true);
       refreshTokenCookie.setSecure(true);
-      refreshTokenCookie.setPath("/api/auth");
+      refreshTokenCookie.setPath("/api/auth/sign-out");
       refreshTokenCookie.setMaxAge(0);
       response.addCookie(refreshTokenCookie);
     }

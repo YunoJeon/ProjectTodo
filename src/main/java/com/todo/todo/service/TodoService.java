@@ -163,7 +163,7 @@ public class TodoService {
     }
 
     boolean isConfirmed = collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
-        project, user, true);
+        project, user);
 
     if (!isConfirmed) {
       throw new CustomException(FORBIDDEN);
@@ -176,8 +176,8 @@ public class TodoService {
       return;
     }
 
-    boolean isEditor = collaboratorQueryService.existsByProjectAndCollaboratorAndRoleTypeAndConfirmed(
-        project, user, EDITOR, true);
+    boolean isEditor = collaboratorQueryService.existsByProjectAndCollaboratorAndRoleTypeAndIsConfirmed(
+        project, user, EDITOR);
 
     if (!isEditor) {
       throw new CustomException(FORBIDDEN);

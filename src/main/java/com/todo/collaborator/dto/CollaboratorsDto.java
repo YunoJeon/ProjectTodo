@@ -1,6 +1,7 @@
 package com.todo.collaborator.dto;
 
 import com.todo.collaborator.entity.Collaborator;
+import com.todo.collaborator.type.ConfirmType;
 import com.todo.collaborator.type.RoleType;
 import lombok.Builder;
 
@@ -10,7 +11,7 @@ public record CollaboratorsDto(
     Long collaboratorId,
     String name,
     RoleType roleType,
-    boolean isConfirmed
+    ConfirmType confirmType
 ) {
 
   public static CollaboratorsDto fromEntity(Collaborator collaborator) {
@@ -19,7 +20,7 @@ public record CollaboratorsDto(
         .collaboratorId(collaborator.getId())
         .name(collaborator.getCollaborator().getName())
         .roleType(collaborator.getRoleType())
-        .isConfirmed(collaborator.isConfirmed())
+        .confirmType(collaborator.getConfirmType())
         .build();
   }
 }

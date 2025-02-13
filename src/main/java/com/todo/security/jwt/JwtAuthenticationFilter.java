@@ -1,5 +1,7 @@
 package com.todo.security.jwt;
 
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+
 import com.todo.exception.CustomException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -49,6 +51,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
       } catch (CustomException e) {
         log.warn("Access Token expired: {}", e.getMessage());
+        response.setStatus(UNAUTHORIZED.value());
+        response.setContentType("application/json");
+        response.getWriter().write("{\"error\":\"INVALID_TOKEN\",\"message\":\"Access Token expired.\"}");
+        return;
       }
     }
     filterChain.doFilter(request, response);

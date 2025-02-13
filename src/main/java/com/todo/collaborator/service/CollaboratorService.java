@@ -1,5 +1,7 @@
 package com.todo.collaborator.service;
 
+import static com.todo.collaborator.type.ConfirmType.FALSE;
+import static com.todo.collaborator.type.ConfirmType.TRUE;
 import static com.todo.collaborator.type.RoleType.EDITOR;
 import static com.todo.exception.ErrorCode.ALREADY_EXISTS_USER;
 import static com.todo.exception.ErrorCode.FORBIDDEN;
@@ -45,21 +47,21 @@ public class CollaboratorService {
     User invitedUser = userQueryService.findById(collaboratorDto.collaboratorId());
 
     if (collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
-        project, invitedUser, true)) {
+        project, invitedUser)) {
       throw new CustomException(ALREADY_EXISTS_USER);
     }
 
     collaboratorRepository.save(
-        Collaborator.of(invitedUser, project, collaboratorDto.roleType(), false));
+        Collaborator.of(invitedUser, project, collaboratorDto.roleType(), FALSE));
   }
 
   private void registerOwner(User owner, Project project) {
 
     boolean ownerAlreadyExists = collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
-        project, owner, true);
+        project, owner);
 
     if (!ownerAlreadyExists) {
-      collaboratorRepository.save(Collaborator.of(owner, project, EDITOR, true));
+      collaboratorRepository.save(Collaborator.of(owner, project, EDITOR, TRUE));
     }
   }
 
@@ -70,7 +72,7 @@ public class CollaboratorService {
     Project project = projectQueryService.findById(projectId);
 
     if (!collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
-        project, collaborator, true)) {
+        project, collaborator)) {
       throw new CustomException(FORBIDDEN);
     }
 

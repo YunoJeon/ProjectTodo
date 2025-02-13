@@ -1,6 +1,7 @@
 package com.todo.collaborator.repository;
 
 import com.todo.collaborator.entity.Collaborator;
+import com.todo.collaborator.type.ConfirmType;
 import com.todo.collaborator.type.RoleType;
 import com.todo.project.entity.Project;
 import com.todo.user.entity.User;
@@ -11,13 +12,13 @@ import org.springframework.data.repository.query.Param;
 
 public interface CollaboratorRepository extends JpaRepository<Collaborator, Long> {
 
-  boolean existsByProjectAndCollaboratorAndConfirmed(Project project, User collaborator, boolean confirmed);
+  boolean existsByProjectAndCollaboratorAndConfirmType(Project project, User collaborator, ConfirmType confirmType);
 
   List<Collaborator> findByProject(Project project);
 
-  @Query("SELECT DISTINCT c.project FROM Collaborator c WHERE c.collaborator = :user AND c.isConfirmed = true")
-  List<Project> findProjectsByCollaborator(@Param("user") User user);
+  @Query("SELECT DISTINCT c.project FROM Collaborator c WHERE c.collaborator = :user AND c.confirmType = :confirmType")
+  List<Project> findProjectsByCollaborator(@Param("user") User user, @Param("confirmType") ConfirmType confirmType);
 
-  boolean existsByProjectAndCollaboratorAndRoleTypeAndConfirmed(Project project, User collaborator,
-      RoleType roleType, boolean confirmed);
+  boolean existsByProjectAndCollaboratorAndRoleTypeAndConfirmType(Project project, User collaborator,
+      RoleType roleType, ConfirmType confirmType);
 }
