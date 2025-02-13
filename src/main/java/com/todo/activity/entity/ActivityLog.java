@@ -1,12 +1,16 @@
-package com.todo.notification.entity;
+package com.todo.activity.entity;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
-import com.todo.user.entity.User;
+import com.todo.activity.type.ActionType;
+import com.todo.project.entity.Project;
+import com.todo.todo.entity.Todo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -25,36 +29,41 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Builder
 @NoArgsConstructor(access = PROTECTED)
 @AllArgsConstructor
-@Table(name = "notifications")
+@Table(name = "activity_logs")
 @EntityListeners(AuditingEntityListener.class)
-public class Notification {
+public class ActivityLog {
 
   @Id
   @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
-  @JoinColumn(name = "user_id", nullable = false)
   @ManyToOne(fetch = LAZY)
-  private User user;
+  @JoinColumn(name = "project_id", nullable = false)
+  private Project project;
 
-  private String message;
+  @ManyToOne(fetch = LAZY)
+  @JoinColumn(name = "todo_id")
+  private Todo todo;
 
-  private boolean isRead;
+  @Enumerated(STRING)
+  private ActionType actionType;
+
+  private String actionDetail;
+
+  private String changerName;
 
   @CreatedDate
   private LocalDateTime createdAt;
 
-  public static Notification of(User user, String message) {
+  public static ActivityLog of(Project project, Todo todo, ActionType actionType,
+      String actionDetail, String changerName) {
 
-    return Notification.builder()
-        .user(user)
-        .message(message)
-        .isRead(false)
+    return ActivityLog.builder()
+        .project(project)
+        .todo(todo)
+        .actionType(actionType)
+        .actionDetail(actionDetail)
+        .changerName(changerName)
         .build();
-  }
-
-  public void update() {
-
-    isRead = true;
   }
 }

@@ -1,11 +1,13 @@
 package com.todo.collaborator.service;
 
+import static com.todo.activity.type.ActionType.PROJECT;
 import static com.todo.collaborator.type.ConfirmType.FALSE;
 import static com.todo.collaborator.type.ConfirmType.TRUE;
 import static com.todo.collaborator.type.RoleType.EDITOR;
 import static com.todo.exception.ErrorCode.ALREADY_EXISTS_USER;
 import static com.todo.exception.ErrorCode.FORBIDDEN;
 
+import com.todo.activity.service.ActivityLogService;
 import com.todo.collaborator.dto.CollaboratorDto;
 import com.todo.collaborator.dto.CollaboratorsDto;
 import com.todo.collaborator.entity.Collaborator;
@@ -39,6 +41,8 @@ public class CollaboratorService {
   private final CollaboratorRepository collaboratorRepository;
 
   private final NotificationService notificationService;
+
+  private final ActivityLogService activityLogService;
 
   @Transactional
   public void addCollaborator(Authentication auth, Long projectId,
@@ -109,15 +113,19 @@ public class CollaboratorService {
 
     Project project = findOwnerWithProject(auth, projectId);
 
-    collaboratorRepository.delete(collaboratorQueryService.findById(collaboratorId));
+    Collaborator collaborator = collaboratorQueryService.findById(collaboratorId);
 
-    User deletedUser = userQueryService.findById(collaboratorId);
+    User deletedUser = collaborator.getCollaborator();
+
+    collaboratorRepository.delete(collaborator);
 
     List<Collaborator> collaborators = collaboratorQueryService.findByProject(project);
 
     List<User> users = collaborators.stream().map(Collaborator::getCollaborator).toList();
 
     notificationService.notifyProjectUserRemoval(users, deletedUser, project);
+
+    activityLogService.recordProjectExclusion(project, PROJECT, deletedUser.getName());
 
     return collaborators.stream().map(CollaboratorsDto::fromEntity).collect(Collectors.toList());
   }
@@ -134,6 +142,7 @@ public class CollaboratorService {
     return project;
   }
 
+  @Transactional
   public void updateConfirm(Authentication auth, Long projectId, Long collaboratorId,
       ConfirmType confirmType) {
 
@@ -154,5 +163,7 @@ public class CollaboratorService {
     List<User> users = collaborators.stream().map(Collaborator::getCollaborator).toList();
 
     notificationService.notifyUserOnJoin(users, invitedUser, project);
+
+    activityLogService.recordProjectParticipation(project, PROJECT, invitedUser.getName());
   }
 }

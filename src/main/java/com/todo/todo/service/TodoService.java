@@ -1,11 +1,13 @@
 package com.todo.todo.service;
 
+import static com.todo.activity.type.ActionType.TODO;
 import static com.todo.collaborator.type.RoleType.EDITOR;
 import static com.todo.exception.ErrorCode.FORBIDDEN;
 import static com.todo.exception.ErrorCode.VERSION_CONFLICT;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.todo.activity.service.ActivityLogService;
 import com.todo.collaborator.entity.Collaborator;
 import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.exception.CustomException;
@@ -47,6 +49,8 @@ public class TodoService {
 
   private final NotificationService notificationService;
 
+  private final ActivityLogService activityLogService;
+
   private final CollaboratorQueryService collaboratorQueryService;
 
   private final TodoMapper todoMapper;
@@ -73,6 +77,8 @@ public class TodoService {
           .filter(author -> !author.getId().equals(user.getId())).toList();
 
       notificationService.notifyTodoAddedByOthers(users, todo, project);
+
+      activityLogService.recordTodoCreation(project, todo, TODO, user.getName());
 
     } else {
 
@@ -170,7 +176,14 @@ public class TodoService {
           .filter(author -> !author.getId().equals(user.getId())).toList();
 
       notificationService.notifyTodoStatusChangedByOthers(users, todo, project);
+
+      if (!todo.isCompleted()) {
+        activityLogService.recordTodoUpdate(project, todo, TODO, user.getName());
+      } else {
+        activityLogService.recordTodoComplete(project, todo, TODO, user.getName());
+      }
     }
+
     try {
       entityManager.flush();
       return TodoResponseDto.fromEntity(todo);
