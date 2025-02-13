@@ -13,6 +13,7 @@ import com.todo.collaborator.dto.CollaboratorDto;
 import com.todo.collaborator.dto.CollaboratorsDto;
 import com.todo.collaborator.entity.Collaborator;
 import com.todo.collaborator.repository.CollaboratorRepository;
+import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
 import com.todo.user.entity.User;
@@ -42,6 +43,9 @@ class CollaboratorServiceTest {
 
   @Mock
   private CollaboratorRepository collaboratorRepository;
+
+  @Mock
+  private NotificationService notificationService;
 
   @InjectMocks
   private CollaboratorService collaboratorService;

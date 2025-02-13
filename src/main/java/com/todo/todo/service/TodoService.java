@@ -6,8 +6,10 @@ import static com.todo.exception.ErrorCode.VERSION_CONFLICT;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.todo.collaborator.entity.Collaborator;
 import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.exception.CustomException;
+import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
 import com.todo.todo.dto.TodoDto;
@@ -43,6 +45,8 @@ public class TodoService {
 
   private final ProjectQueryService projectQueryService;
 
+  private final NotificationService notificationService;
+
   private final CollaboratorQueryService collaboratorQueryService;
 
   private final TodoMapper todoMapper;
@@ -61,7 +65,15 @@ public class TodoService {
 
       validEditorCollaborator(project, user);
 
-      todoRepository.save(Todo.of(user, todoDto));
+      Todo todo = todoRepository.save(Todo.of(user, todoDto));
+
+      List<Collaborator> collaborators = collaboratorQueryService.findByProject(project);
+
+      List<User> users = collaborators.stream().map(Collaborator::getCollaborator)
+          .filter(author -> !author.getId().equals(user.getId())).toList();
+
+      notificationService.notifyTodoAddedByOthers(users, todo, project);
+
     } else {
 
       todoRepository.save(Todo.of(user, todoDto));
@@ -140,14 +152,25 @@ public class TodoService {
 
     Todo todo = todoQueryService.findById(todoId);
 
+    Project project = null;
+
     if (!todo.getAuthor().getId().equals(user.getId())) {
 
-      Project project = projectQueryService.findById(todo.getProjectId());
+      project = projectQueryService.findById(todo.getProjectId());
       validEditorCollaborator(project, user);
     }
 
     todo.update(todoUpdateDto);
 
+    if (project != null) {
+
+      List<Collaborator> collaborators = collaboratorQueryService.findByProject(project);
+
+      List<User> users = collaborators.stream().map(Collaborator::getCollaborator)
+          .filter(author -> !author.getId().equals(user.getId())).toList();
+
+      notificationService.notifyTodoStatusChangedByOthers(users, todo, project);
+    }
     try {
       entityManager.flush();
       return TodoResponseDto.fromEntity(todo);

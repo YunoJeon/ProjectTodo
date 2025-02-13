@@ -3,6 +3,7 @@ package com.todo.collaborator.controller;
 import com.todo.collaborator.dto.CollaboratorDto;
 import com.todo.collaborator.dto.CollaboratorsDto;
 import com.todo.collaborator.service.CollaboratorService;
+import com.todo.collaborator.type.ConfirmType;
 import com.todo.collaborator.type.RoleType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +50,17 @@ public class CollaboratorController {
 
     return ResponseEntity.ok(
         collaboratorService.updateCollaborator(auth, projectId, collaboratorId, roleType));
+  }
+
+  @PutMapping("/{projectId}/collaborators/{collaboratorId}/confirm")
+  public ResponseEntity<Void> updateCornFirm(Authentication auth,
+      @PathVariable("projectId") Long projectId,
+      @PathVariable("collaboratorId") Long collaboratorId,
+      @RequestBody ConfirmType confirmType) {
+
+    collaboratorService.updateConfirm(auth, projectId, collaboratorId, confirmType);
+
+    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{projectId}/collaborators/{collaboratorId}")

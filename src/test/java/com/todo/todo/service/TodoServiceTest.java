@@ -10,7 +10,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.pagehelper.PageInfo;
+import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.exception.CustomException;
+import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
 import com.todo.todo.dto.TodoDto;
@@ -58,6 +60,12 @@ class TodoServiceTest {
 
   @Mock
   private EntityManager entityManager;
+
+  @Mock
+  private NotificationService notificationService;
+
+  @Mock
+  private CollaboratorQueryService collaboratorQueryService;
 
   @InjectMocks
   private TodoService todoService;

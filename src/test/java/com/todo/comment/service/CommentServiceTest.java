@@ -15,6 +15,7 @@ import com.todo.comment.dto.CommentUpdateDto;
 import com.todo.comment.entity.Comment;
 import com.todo.comment.repository.CommentRepository;
 import com.todo.exception.CustomException;
+import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
 import com.todo.todo.entity.Todo;
@@ -56,6 +57,9 @@ class CommentServiceTest {
 
   @Mock
   private CollaboratorQueryService collaboratorQueryService;
+
+  @Mock
+  private NotificationService notificationService;
 
   @InjectMocks
   private CommentService commentService;
