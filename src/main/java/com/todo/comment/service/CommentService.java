@@ -2,7 +2,6 @@ package com.todo.comment.service;
 
 import static com.todo.exception.ErrorCode.COMMENT_NOT_FOUND;
 import static com.todo.exception.ErrorCode.FORBIDDEN;
-import static com.todo.exception.ErrorCode.PROJECT_NOT_FOUND;
 
 import com.todo.collaborator.entity.Collaborator;
 import com.todo.collaborator.service.CollaboratorQueryService;
@@ -12,6 +11,7 @@ import com.todo.comment.dto.CommentUpdateDto;
 import com.todo.comment.entity.Comment;
 import com.todo.comment.repository.CommentRepository;
 import com.todo.exception.CustomException;
+import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
 import com.todo.todo.entity.Todo;
@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.util.Pair;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,20 +46,34 @@ public class CommentService {
 
   private final CollaboratorQueryService collaboratorQueryService;
 
+  private final NotificationService notificationService;
+
   @Transactional
   public void addComment(Authentication auth, Long todoId, CommentDto commentDto) {
 
-    Todo todo = validProject(todoId);
+    Pair<Todo, Project> pair = validProject(todoId);
+
+    Todo todo = pair.getFirst();
+    Project project = pair.getSecond();
 
     User commentAuthor = validCommentAuthor(auth, todo);
 
     commentRepository.save(Comment.of(commentAuthor, todo, commentDto));
+
+    List<Collaborator> collaborators = collaboratorQueryService.findByProject(project);
+
+    List<User> users = collaborators.stream().map(Collaborator::getCollaborator)
+        .filter(user -> !user.getId().equals(commentAuthor.getId())).toList();
+
+    notificationService.notifyCommentAddedByOthers(users, todo, project);
   }
 
   public Page<CommentResponseDto> getComments(Authentication auth, Long todoId,
       int page, int pageSize) {
 
-    Todo todo = validProject(todoId);
+    Pair<Todo, Project> pair = validProject(todoId);
+
+    Todo todo = pair.getFirst();
 
     validCommentAuthor(auth, todo);
 
@@ -75,7 +90,9 @@ public class CommentService {
   public void updateComments(Authentication auth,
       Long todoId, Long commentId, CommentUpdateDto commentUpdateDto) {
 
-    Todo todo = validProject(todoId);
+    Pair<Todo, Project> pair = validProject(todoId);
+
+    Todo todo = pair.getFirst();
 
     User commentAuthor = validCommentAuthor(auth, todo);
 
@@ -89,15 +106,13 @@ public class CommentService {
     comment.update(commentUpdateDto);
   }
 
-  private Todo validProject(Long todoId) {
+  private Pair<Todo, Project> validProject(Long todoId) {
 
     Todo todo = todoQueryService.findById(todoId);
 
-    if (todo.getProjectId() == null) {
-      throw new CustomException(PROJECT_NOT_FOUND);
-    }
+    Project project = projectQueryService.findById(todo.getProjectId());
 
-    return todo;
+    return Pair.of(todo, project);
   }
 
   private User validCommentAuthor(Authentication auth, Todo todo) {

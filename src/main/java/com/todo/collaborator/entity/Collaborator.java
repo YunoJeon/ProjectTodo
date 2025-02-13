@@ -61,4 +61,9 @@ public class Collaborator {
 
     this.roleType = roleType;
   }
+
+  public void updateConfirm(ConfirmType confirmType) {
+
+    this.confirmType = confirmType;
+  }
 }
