@@ -5,6 +5,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.todo.collaborator.type.ConfirmType;
 import com.todo.collaborator.type.RoleType;
 import com.todo.project.entity.Project;
 import com.todo.user.entity.User;
@@ -43,16 +44,16 @@ public class Collaborator {
   @Enumerated(STRING)
   private RoleType roleType;
 
-  private boolean isConfirmed;
+  private ConfirmType confirmType;
 
   public static Collaborator of(User invitedUser, Project project, RoleType roleType,
-      boolean isConfirmed) {
+      ConfirmType confirmType) {
 
     return Collaborator.builder()
         .collaborator(invitedUser)
         .project(project)
         .roleType(roleType)
-        .isConfirmed(isConfirmed)
+        .confirmType(confirmType)
         .build();
   }
 

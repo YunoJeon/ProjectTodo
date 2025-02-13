@@ -1,5 +1,7 @@
 package com.todo.collaborator.service;
 
+import static com.todo.collaborator.type.ConfirmType.FALSE;
+import static com.todo.collaborator.type.ConfirmType.TRUE;
 import static com.todo.collaborator.type.RoleType.EDITOR;
 import static com.todo.collaborator.type.RoleType.VIEWER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -72,8 +74,8 @@ class CollaboratorServiceTest {
         .name("프로젝트")
         .build();
 
-    collaboratorOwner = Collaborator.of(owner, project, EDITOR, true);
-    collaboratorInvited = Collaborator.of(owner, project, VIEWER, false);
+    collaboratorOwner = Collaborator.of(owner, project, EDITOR, TRUE);
+    collaboratorInvited = Collaborator.of(owner, project, VIEWER, FALSE);
 
     auth = new UsernamePasswordAuthenticationToken(owner.getEmail(), null);
   }
@@ -93,12 +95,12 @@ class CollaboratorServiceTest {
     verify(collaboratorRepository).save(argThat(collaborator ->
         collaborator.getCollaborator().getId().equals(owner.getId()) &&
         collaborator.getRoleType() == EDITOR &&
-        collaborator.isConfirmed()));
+        collaborator.getConfirmType() == TRUE));
 
     verify(collaboratorRepository).save(argThat(collaborator ->
         collaborator.getCollaborator().getId().equals(invitedUser.getId()) &&
         collaborator.getRoleType() == VIEWER &&
-        !collaborator.isConfirmed()));
+        collaborator.getConfirmType() == FALSE));
   }
 
   @Test
@@ -108,7 +110,7 @@ class CollaboratorServiceTest {
     when(userQueryService.findByEmail(owner.getEmail())).thenReturn(owner);
     when(projectQueryService.findById(project.getId())).thenReturn(project);
     when(collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
-        project, owner, true)).thenReturn(true);
+        project, owner)).thenReturn(true);
 
     List<Collaborator> collaborators = List.of(collaboratorOwner, collaboratorInvited);
     when(collaboratorQueryService.findByProject(project)).thenReturn(collaborators);

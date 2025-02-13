@@ -67,7 +67,7 @@ public class ProjectService {
 
     boolean isOwner = project.getOwner().getId().equals(currentUser.getId());
     boolean isCollaboratorConfirmed = collaboratorQueryService.existsByProjectAndCollaboratorAndIsConfirmed(
-        project, currentUser, true);
+        project, currentUser);
 
     if (!isOwner && !isCollaboratorConfirmed) {
 

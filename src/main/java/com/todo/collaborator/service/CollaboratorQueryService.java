@@ -1,5 +1,6 @@
 package com.todo.collaborator.service;
 
+import static com.todo.collaborator.type.ConfirmType.TRUE;
 import static com.todo.exception.ErrorCode.COLLABORATOR_NOT_FOUND;
 
 import com.todo.collaborator.entity.Collaborator;
@@ -21,9 +22,9 @@ public class CollaboratorQueryService {
   private final CollaboratorRepository collaboratorRepository;
 
   public boolean existsByProjectAndCollaboratorAndIsConfirmed(
-      Project project, User collaborator, boolean isConfirmed) {
-    return collaboratorRepository.existsByProjectAndCollaboratorAndConfirmed(
-        project, collaborator, isConfirmed);
+      Project project, User collaborator) {
+    return collaboratorRepository.existsByProjectAndCollaboratorAndConfirmType(
+        project, collaborator, TRUE);
   }
 
   public Collaborator findById(Long id) {
@@ -36,13 +37,13 @@ public class CollaboratorQueryService {
   }
 
   public List<Project> findProjectsByCollaborator(User user) {
-    return collaboratorRepository.findProjectsByCollaborator(user);
+    return collaboratorRepository.findProjectsByCollaborator(user, TRUE);
   }
 
-  public boolean existsByProjectAndCollaboratorAndRoleTypeAndConfirmed(Project project, User user,
-      RoleType roleType, boolean isConfirmed) {
+  public boolean existsByProjectAndCollaboratorAndRoleTypeAndIsConfirmed(Project project, User user,
+      RoleType roleType) {
 
-    return collaboratorRepository.existsByProjectAndCollaboratorAndRoleTypeAndConfirmed(
-        project, user, roleType, isConfirmed);
+    return collaboratorRepository.existsByProjectAndCollaboratorAndRoleTypeAndConfirmType(
+        project, user, roleType, TRUE);
   }
 }
