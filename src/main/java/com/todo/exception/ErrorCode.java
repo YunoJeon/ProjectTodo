@@ -25,7 +25,7 @@ public enum ErrorCode {
   TODO_NOT_FOUND(NOT_FOUND, "할일을 찾을 수 없습니다."),
   PROJECT_NOT_FOUND(NOT_FOUND, "프로젝트를 찾을 수 없습니다."),
   COLLABORATOR_NOT_FOUND(NOT_FOUND, "협업자를 찾을 수 없습니다."),
-
+  COMMENT_NOT_FOUND(NOT_FOUND, "댓글을 찾을 수 없습니다."),
   // 408 REQUEST TIMEOUT
 
   // 409 CONFLICT

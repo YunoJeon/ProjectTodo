@@ -21,4 +21,7 @@ public interface CollaboratorRepository extends JpaRepository<Collaborator, Long
 
   boolean existsByProjectAndCollaboratorAndRoleTypeAndConfirmType(Project project, User collaborator,
       RoleType roleType, ConfirmType confirmType);
+
+  Collaborator findByProjectAndCollaboratorAndConfirmType(Project project, User commentAuthor,
+      ConfirmType confirmType);
 }
