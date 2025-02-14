@@ -16,6 +16,7 @@ import com.todo.exception.CustomException;
 import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
+import com.todo.snapshot.service.SnapShotService;
 import com.todo.todo.dto.TodoDto;
 import com.todo.todo.dto.TodoFilterRequestDto;
 import com.todo.todo.dto.TodoFilterResponseDto;
@@ -64,6 +65,9 @@ class TodoServiceTest {
 
   @Mock
   private NotificationService notificationService;
+
+  @Mock
+  private SnapShotService snapShotService;
 
   @Mock
   private CollaboratorQueryService collaboratorQueryService;
@@ -118,6 +122,8 @@ class TodoServiceTest {
     TodoDto todoDto = new TodoDto(project.getId(), "할일", "설명", WORK, true, LocalDateTime.now());
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
     when(projectQueryService.findById(project.getId())).thenReturn(project);
+    when(todoRepository.save(any(Todo.class))).thenAnswer(
+        invocationOnMock -> invocationOnMock.getArgument(0));
     // when
     todoService.createTodo(auth, todoDto);
     // then
@@ -132,7 +138,8 @@ class TodoServiceTest {
     when(todoMapper.filterTodos(any(TodoFilterRequestDto.class))).thenReturn(todoList);
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
     // when
-    PageInfo<TodoFilterResponseDto> pageInfo = todoService.getTodos(auth, null, INDIVIDUAL, false, false,
+    PageInfo<TodoFilterResponseDto> pageInfo = todoService.getTodos(auth, null, INDIVIDUAL, false,
+        false,
         1, 10);
     // then
     assertEquals(todo.getId(), pageInfo.getList().get(0).id());

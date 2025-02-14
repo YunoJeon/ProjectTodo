@@ -14,6 +14,7 @@ import com.todo.exception.CustomException;
 import com.todo.notification.service.NotificationService;
 import com.todo.project.entity.Project;
 import com.todo.project.service.ProjectQueryService;
+import com.todo.snapshot.service.SnapShotService;
 import com.todo.todo.dto.TodoDto;
 import com.todo.todo.dto.TodoFilterRequestDto;
 import com.todo.todo.dto.TodoFilterResponseDto;
@@ -53,6 +54,8 @@ public class TodoService {
 
   private final CollaboratorQueryService collaboratorQueryService;
 
+  private final SnapShotService snapShotService;
+
   private final TodoMapper todoMapper;
 
   @PersistenceContext
@@ -78,7 +81,10 @@ public class TodoService {
 
       notificationService.notifyTodoAddedByOthers(users, todo, project);
 
-      activityLogService.recordTodoCreation(project, todo, TODO, user.getName());
+      Long snapshotId = snapShotService.saveSnapshot(todo);
+
+      activityLogService.recordTodoCreation(
+          project, todo, TODO, user.getName(), todo.getVersion(), snapshotId);
 
     } else {
 
@@ -177,10 +183,14 @@ public class TodoService {
 
       notificationService.notifyTodoStatusChangedByOthers(users, todo, project);
 
+      Long snapshotId = snapShotService.saveSnapshot(todo);
+
       if (!todo.isCompleted()) {
-        activityLogService.recordTodoUpdate(project, todo, TODO, user.getName());
+        activityLogService.recordTodoUpdate(
+            project, todo, TODO, user.getName(), todo.getVersion(), snapshotId);
       } else {
-        activityLogService.recordTodoComplete(project, todo, TODO, user.getName());
+        activityLogService.recordTodoComplete(
+            project, todo, TODO, user.getName(), todo.getVersion(), snapshotId);
       }
     }
 

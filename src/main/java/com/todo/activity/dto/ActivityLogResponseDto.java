@@ -14,6 +14,8 @@ public record ActivityLogResponseDto(
     ActionType actionType,
     Long todoId,
     String todoTitle,
+    Long todoVersion,
+    Long snapshotId,
     LocalDateTime createdAt
 ) {
 
@@ -28,6 +30,8 @@ public record ActivityLogResponseDto(
         .changerName(activityLog.getChangerName())
         .todoId(todoId)
         .todoTitle(todoTitle)
+        .todoVersion(activityLog.getTodoVersion())
+        .snapshotId(activityLog.getSnapshotId())
         .createdAt(activityLog.getCreatedAt())
         .build();
   }

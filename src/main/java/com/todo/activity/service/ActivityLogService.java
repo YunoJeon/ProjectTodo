@@ -65,45 +65,59 @@ public class ActivityLogService {
   }
 
   @Transactional
-  public void saveLog(Project project, Todo todo, ActionType actionType, String changerName, String actionDetail) {
+  public void saveLog(Project project, Todo todo, ActionType actionType, String changerName,
+      String actionDetail, Long todoVersion, Long snapshotId) {
 
-    ActivityLog activityLog = ActivityLog.of(project, todo, actionType, actionDetail, changerName);
+    ActivityLog activityLog = ActivityLog.of(project, todo, actionType, actionDetail, changerName, todoVersion, snapshotId);
 
     activityLogRepository.save(activityLog);
   }
 
-  public void recordTodoCreation(Project project, Todo todo, ActionType actionType, String changerName) {
+  public void recordTodoCreation(Project project, Todo todo, ActionType actionType,
+      String changerName, Long todoVersion, Long snapshotId) {
 
     String actionDetail = String.format("%s 할일이 생성되었습니다.", todo.getTitle());
 
-    saveLog(project, todo, actionType, changerName, actionDetail);
+    saveLog(project, todo, actionType, changerName, actionDetail, todoVersion, snapshotId);
   }
 
-  public void recordTodoUpdate(Project project, Todo todo, ActionType actionType, String changerName) {
+  public void recordTodoUpdate(Project project, Todo todo, ActionType actionType,
+      String changerName, Long todoVersion, Long snapshotId) {
 
     String actionDetail = String.format("%s 할일이 수정 되었습니다.", todo.getTitle());
 
-    saveLog(project, todo, actionType, changerName, actionDetail);
+    saveLog(project, todo, actionType, changerName, actionDetail, todoVersion, snapshotId);
   }
 
-  public void recordTodoComplete(Project project, Todo todo, ActionType actionType, String changerName) {
+  public void recordTodoComplete(Project project, Todo todo, ActionType actionType,
+      String changerName, Long todoVersion, Long snapshotId) {
 
     String actionDetail = String.format("%s 할일이 완료 되었습니다.", todo.getTitle());
 
-    saveLog(project, todo, actionType, changerName, actionDetail);
+    saveLog(project, todo, actionType, changerName, actionDetail, todoVersion, snapshotId);
   }
 
-  public void recordProjectParticipation(Project project, ActionType actionType, String invitedUser) {
+  public void recordTodoRollback(Project project, Todo todo, ActionType actionType,
+      String changerName, Long previousVersion, Long currentVersion, Long snapshotId) {
+
+    String actionDetail = String.format("%s 님이 %s 할일을 롤백하였습니다. (롤백 전 버전: %d)",
+        changerName, todo.getTitle(), previousVersion);
+
+    saveLog(project, todo, actionType, changerName, actionDetail, currentVersion, snapshotId);
+  }
+
+  public void recordProjectParticipation(Project project, ActionType actionType,
+      String invitedUser) {
 
     String actionDetail = String.format("%s 님이 %s 프로젝트에 참여하였습니다.", invitedUser, project.getName());
 
-    saveLog(project, null, actionType, invitedUser, actionDetail);
+    saveLog(project, null, actionType, invitedUser, actionDetail, null, null);
   }
 
   public void recordProjectExclusion(Project project, ActionType actionType, String deletedUser) {
 
     String actionDetail = String.format("%s 님이 %s 프로젝트에 제외되었습니다.", deletedUser, project.getName());
 
-    saveLog(project, null, actionType, deletedUser, actionDetail);
+    saveLog(project, null, actionType, deletedUser, actionDetail, null, null);
   }
 }

@@ -47,7 +47,7 @@ public class CollaboratorQueryService {
         project, user, roleType, TRUE);
   }
 
-  public Collaborator findByProjectAndCollaboratorIsConfirmed(Project project, User commentAuthor) {
-    return collaboratorRepository.findByProjectAndCollaboratorAndConfirmType(project, commentAuthor, TRUE);
+  public Collaborator findByProjectAndCollaboratorIsConfirmed(Project project, User user) {
+    return collaboratorRepository.findByProjectAndCollaboratorAndConfirmType(project, user, TRUE);
   }
 }

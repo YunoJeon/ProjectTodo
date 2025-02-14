@@ -52,11 +52,15 @@ public class ActivityLog {
 
   private String changerName;
 
+  private Long todoVersion;
+
+  private Long snapshotId;
+
   @CreatedDate
   private LocalDateTime createdAt;
 
   public static ActivityLog of(Project project, Todo todo, ActionType actionType,
-      String actionDetail, String changerName) {
+      String actionDetail, String changerName, Long todoVersion, Long snapshotId) {
 
     return ActivityLog.builder()
         .project(project)
@@ -64,6 +68,8 @@ public class ActivityLog {
         .actionType(actionType)
         .actionDetail(actionDetail)
         .changerName(changerName)
+        .todoVersion(todoVersion)
+        .snapshotId(snapshotId)
         .build();
   }
 }
