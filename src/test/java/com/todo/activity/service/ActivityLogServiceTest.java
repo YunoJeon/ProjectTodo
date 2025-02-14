@@ -123,7 +123,7 @@ class ActivityLogServiceTest {
     // given
     String actionDetail = String.format("%s 할일이 생성되었습니다.", todo.getTitle());
     // when
-    activityLogService.recordTodoCreation(project, todo, TODO, actionDetail);
+    activityLogService.recordTodoCreation(project, todo, TODO, actionDetail, todo.getVersion(), null);
     // then
     verify(activityLogRepository).save(any(ActivityLog.class));
   }

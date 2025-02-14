@@ -27,6 +27,7 @@ public enum ErrorCode {
   COLLABORATOR_NOT_FOUND(NOT_FOUND, "협업자를 찾을 수 없습니다."),
   COMMENT_NOT_FOUND(NOT_FOUND, "댓글을 찾을 수 없습니다."),
   NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림을 찾을 수 없습니다."),
+  SNAPSHOT_NOT_FOUND(NOT_FOUND, "저장된 스냅샷을 찾을 수 없습니다."),
 
   // 408 REQUEST TIMEOUT
 

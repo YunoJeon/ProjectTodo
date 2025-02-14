@@ -5,6 +5,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
+import com.todo.snapshot.entity.Snapshot;
 import com.todo.todo.dto.TodoDto;
 import com.todo.todo.dto.TodoUpdateDto;
 import com.todo.todo.type.TodoCategory;
@@ -80,6 +81,16 @@ public class Todo {
         .version(1L)
         .dueDate(todoDto.dueDate())
         .build();
+  }
+
+  public void restoreTodo(Snapshot snapshot) {
+
+    title = snapshot.getTitle();
+    description = snapshot.getDescription();
+    todoCategory = snapshot.getTodoCategory();
+    isCompleted = snapshot.isCompleted();
+    isPriority = snapshot.isPriority();
+    dueDate = snapshot.getDueDate();
   }
 
   public void update(TodoUpdateDto todoUpdateDto) {
