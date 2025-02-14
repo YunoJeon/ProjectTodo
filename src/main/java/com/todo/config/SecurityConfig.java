@@ -34,7 +34,9 @@ public class SecurityConfig {
                 "/api/auth/sign-out",
                 "/api/images/profile/upload",
                 "/uploads/**",
-                "/api/users/info/**").permitAll()
+                "/api/users/info/**",
+                "/swagger-ui/**",
+                "/v3/**").permitAll()
             .anyRequest().authenticated())
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

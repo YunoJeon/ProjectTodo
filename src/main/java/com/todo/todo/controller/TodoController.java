@@ -7,6 +7,8 @@ import com.todo.todo.dto.TodoResponseDto;
 import com.todo.todo.dto.TodoUpdateDto;
 import com.todo.todo.service.TodoService;
 import com.todo.todo.type.TodoCategory;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/todos")
 @RequiredArgsConstructor
+@Tag(name = "Todo API", description = "투두 API")
 public class TodoController {
 
   private final TodoService todoService;
 
   @PostMapping
+  @Operation(summary = "투두 생성 API", description = "투두를 생성할 수 있습니다.")
   public ResponseEntity<Void> createTodo(Authentication auth,
       @RequestBody @Valid TodoDto todoDto) {
 
@@ -37,6 +41,7 @@ public class TodoController {
   }
 
   @GetMapping
+  @Operation(summary = "투두 목록 조회 API", description = "투두 목록을 조회할 수 있습니다. parameter 값으로 동적 필터링 되어 조건에 맞는 목록을 조회할 수 있습니다. 페이징 처리 되어있습니다.")
   public ResponseEntity<PageInfo<TodoFilterResponseDto>> getTodos(Authentication auth,
       @RequestParam(value = "projectId", required = false) Long projectId,
       @RequestParam(value = "category", required = false) TodoCategory todoCategory,
@@ -51,6 +56,7 @@ public class TodoController {
   }
 
   @GetMapping("/{todoId}")
+  @Operation(summary = "투두 상세 조회 API", description = "특정 투두의 상세 정보를 조회할 수 있습니다.")
   public ResponseEntity<TodoResponseDto> getTodoDetail(Authentication auth,
       @PathVariable Long todoId) {
 
@@ -58,6 +64,7 @@ public class TodoController {
   }
 
   @PutMapping("/{todoId}")
+  @Operation(summary = "투두 수정 API", description = "특정 투두를 수정할 수 있습니다.")
   public ResponseEntity<TodoResponseDto> updateTodo(Authentication auth,
       @PathVariable Long todoId,
       @RequestBody @Valid TodoUpdateDto todoUpdateDto) {
