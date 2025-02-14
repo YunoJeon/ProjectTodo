@@ -6,6 +6,17 @@
 
 ---
 
+<img src="https://img.shields.io/badge/Java-C00000?style=for-the-badge&logo=java&logoColor=white"> <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">  <img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">  <img src="https://img.shields.io/badge/redis-FF4438?style=for-the-badge&logo=redis&logoColor=white"> <img src="https://img.shields.io/badge/jpa-59666C?style=for-the-badge&logo=jpa&logoColor=white"> 
+
+<img src="https://img.shields.io/badge/spring security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white">  <img src="https://img.shields.io/badge/json web tokens-000000?style=for-the-badge&logo=json web tokens&logoColor=white"> <img src="https://img.shields.io/badge/j unit-25A162?style=for-the-badge&logo=j unit&logoColor=white">  <img src="https://img.shields.io/badge/mockito-3111324?style=for-the-badge&logo=mockito&logoColor=white">
+<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+
+<img src="https://img.shields.io/badge/MyBatis-006600?style=for-the-badge&logo=mybatis&logoColor=white"> <img src="https://img.shields.io/badge/PageHelper-E25A1C?style=for-the-badge&logo=pagehelper&logoColor=white"> <img src="https://img.shields.io/badge/Thumbnailator-4285F4?style=for-the-badge&logo=thumbnailrator&logoColor=white"> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
+
+
+
+---
+
 
 `Notion 링크` : [Notion](https://www.notion.so/To-Do-19303366e7b380fab3bbf45b7c6e4cba?pvs=4)
 
