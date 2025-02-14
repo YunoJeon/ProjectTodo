@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/api/project")
 @Tag(name = "Activity Log API", description = "활동 로그 API")
 public class ActivityLogController {
 
