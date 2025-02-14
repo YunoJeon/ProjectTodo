@@ -44,6 +44,7 @@ public class Collaborator {
   @Enumerated(STRING)
   private RoleType roleType;
 
+  @Enumerated(STRING)
   private ConfirmType confirmType;
 
   public static Collaborator of(User invitedUser, Project project, RoleType roleType,

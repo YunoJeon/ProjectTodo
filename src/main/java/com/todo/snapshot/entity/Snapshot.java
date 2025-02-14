@@ -1,11 +1,14 @@
 package com.todo.snapshot.entity;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.todo.todo.entity.Todo;
 import com.todo.todo.type.TodoCategory;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -26,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class Snapshot {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = IDENTITY)
   private Long id;
 
   @ManyToOne(fetch = LAZY)
@@ -37,6 +40,7 @@ public class Snapshot {
 
   private String description;
 
+  @Enumerated(STRING)
   private TodoCategory todoCategory;
 
   private boolean isCompleted;
