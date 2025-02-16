@@ -84,19 +84,20 @@ const DashboardPage: React.FC = () => {
 
         try {
           if (reset) {
-            setTodos([]);
-            setProjects([]);
             setPage(1);
             setProjectPage(1);
             setHasMore(true);
             setHasMoreProjects(true);
 
-            await Promise.all([fetchTodos(1), fetchProjects(1)]).then(([todoResponse, projectResponse]) => {
-              setTodos(todoResponse.data.list);
-              setProjects(projectResponse.data.content);
-              setHasMore(todoResponse.data.list.length >= 10);
-              setHasMoreProjects(projectResponse.data.numberOfElements > 0);
-            });
+            const [todoResponse, projectResponse] = await Promise.all([
+              fetchTodos(1),
+              fetchProjects(1)
+            ]);
+
+            setTodos(todoResponse.data.list);
+            setProjects(projectResponse.data.content);
+            setHasMore(todoResponse.data.list.length >= 10);
+            setHasMoreProjects(projectResponse.data.numberOfElements > 0);
             return;
           }
 
@@ -109,6 +110,7 @@ const DashboardPage: React.FC = () => {
             const existingIds = new Set(prevTodos.map((todo) => todo.id));
             return [...prevTodos, ...newTodos.filter(todo => !existingIds.has(todo.id))];
           });
+
         } catch (error) {
           console.error("API 호출 에러", error);
         } finally {
@@ -221,10 +223,7 @@ const DashboardPage: React.FC = () => {
                 visible={modalVisible}
                 onClose={() => setModalVisible(false)}
                 onTodoCreated={() => {
-                  setTodos([]);
-                  setPage(1);
-                  setHasMore(true);
-                  setLoading(true);
+                  fetchData(true);
                 }}
             />
             <TodoDetailModal todoId={selectedTodoId}
@@ -239,7 +238,7 @@ const DashboardPage: React.FC = () => {
                 visible={projectModalVisible}
                 onClose={() => setProjectModalVisible(false)}
                 onProjectCreated={() => {
-                  fetchData();
+                  fetchData(true);
                 }}
             />
           </div>
