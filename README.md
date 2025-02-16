@@ -13,7 +13,11 @@
 
 <img src="https://img.shields.io/badge/MyBatis-006600?style=for-the-badge&logo=mybatis&logoColor=white"> <img src="https://img.shields.io/badge/PageHelper-E25A1C?style=for-the-badge&logo=pagehelper&logoColor=white"> <img src="https://img.shields.io/badge/Thumbnailator-4285F4?style=for-the-badge&logo=thumbnailrator&logoColor=white"> <img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white">
 
+---
 
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/AntDesign-0170FE?style=for-the-badge&logo=antdesign&logoColor=white"> <img src="https://img.shields.io/badge/ReactRouter-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
+
+<img src="https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white"> <img src="https://img.shields.io/badge/Moment-5A6AB1?style=for-the-badge&logo=moment&logoColor=white"> <img src="https://img.shields.io/badge/ReactWindow-80B3FF?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/ReactWindowInfiniteLoader-020B24?style=for-the-badge&logo=react&logoColor=white">
 
 ---
 
@@ -26,12 +30,14 @@
 
 `📆 BE 개발기간` : 2025.2.7 - 2025.2.14
 
+`📆 FE 개발기간` : 2025.2.14 - ing
+
 ---
 
 <div align="center">
 
 ## 🗺️ ERD
-<img width="866" alt="스크린샷 2025-02-14 오후 3 55 21" src="https://github.com/user-attachments/assets/a4db8467-932a-4678-a70b-6a4485342f84" />
+<img width="866" alt="스크린샷 2025-02-14 오후 3 55 21" src="https://github.com/user-attachments/assets/a4db8467-932a-4678-a70b-6a4485342f84" />
 
 ---
 
@@ -110,7 +116,7 @@
 <div align="center">
 
 
-## ⭐️ 사용한 라이브러리
+## ⭐️ BE - 사용한 라이브러리
 
 </div>
 
@@ -125,6 +131,25 @@
 
 <div align="center">
 
+## ⭐️ FE - 사용한 라이브러리 및 컴포넌트
+
+</div>
+
+- `Ant Design`: 간결한 디자인 시스템, 일관된 UI 스타일
+  - `Button`: 버튼 스일링
+  - `Modal`: 할일 및 프로젝트 상세정보 보기 팝업
+  - `Drawer`: 사이드 메뉴 구현
+  - `Select`: 필터링 및 카테고리 선택
+  - `Typography`: 텍스트 스타일 적용
+  - `List`: 목록 데이터 렌더링
+- `react-router-dom`: 클라이언트 사이드 라우팅 지원하여 페이지 전환 처리
+  - `useNavigate`: 페이지 이동
+- `react-window`: 많은 데이터를 효율적으로 렌더링하기 위한 가상 리스트 컴포넌트
+- `react-window-infinite-loader`: 무한 스크롤 구현
+- `Axios`: HTTP 요청을 쉽게 관리하고 API 통신을 지원
+
+---
+
 
 ## 🏃‍♂️ 소스 빌드 및 실행방법
 
@@ -133,7 +158,6 @@
 ### 1. 환경설정
 - 프로젝트 실행에 필요한 주요 설정은 `scr/main/resources/application.properties` 파일에 정의
 - MySQL 및 Redis 가 로컬에서 실행중이어야 함
-- 개발과정에 현재 jpa 설정이 create-drop 설정이 되어있고, none 이나 validate 로 변경 필요
 
 ```properties
 # 애플리케이션 기본 정보
@@ -195,3 +219,15 @@ FLUSH PRIVILEGES;
 
 - schema.sql 파일은 루트/database 에 schema.sql 파일 또는 프로젝트 run 할때 자동으로 테이블 생성
 - 기초 데이터 예시 data.sql 파일은 루트/database 에 data.sql 파일에 작성
+
+### 4. FE 빌드
+
+- frontend 패키지(package.json 이 있는 디렉토리) 에서 npm 설치
+```
+npm install
+```
+
+- 해당 디렉토리 에서 실행
+```
+npm start
+```
