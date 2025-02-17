@@ -36,10 +36,6 @@ public class CollaboratorQueryService {
     return collaboratorRepository.findByProject(project);
   }
 
-  public List<Project> findProjectsByCollaborator(User user) {
-    return collaboratorRepository.findProjectsByCollaborator(user, TRUE);
-  }
-
   public boolean existsByProjectAndCollaboratorAndRoleTypeAndIsConfirmed(Project project, User user,
       RoleType roleType) {
 
