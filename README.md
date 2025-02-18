@@ -236,35 +236,35 @@ npm start
 
 ## 회원가입
 
-https://github.com/user-attachments/assets/abdd68e0-92f7-49ae-9181-85423a629bed
+https://github.com/user-attachments/assets/7a38f212-c0c9-4a5b-8932-9115accd79ee
 
 ## 로그인
 
-https://github.com/user-attachments/assets/f8934cbd-b6f8-45ee-96d3-ed96dbcfced0
+https://github.com/user-attachments/assets/47c2104b-1e9d-40a9-a4c5-c6e23332773d
 
 ## 할일생성
 
-https://github.com/user-attachments/assets/0fc6d0b6-1214-4108-a3d1-51e5f5c6f3d8
+https://github.com/user-attachments/assets/6573bc04-18d1-4e0a-a16c-9375ea7b1cd1
 
 ## 무한로딩
 
-https://github.com/user-attachments/assets/93c24bf2-7386-44d7-9f10-ccc932166de6
+https://github.com/user-attachments/assets/91643abe-a8c0-40ff-8342-59f9aba1d676
 
 ## 할일 상세 보기 및 수정
 
-https://github.com/user-attachments/assets/21bb6d46-96cc-4bb3-9c0b-351c449b3c45
+https://github.com/user-attachments/assets/587c3645-f5d0-4870-bb98-fffee8444f97
 
 ## 할일 필터링
 
-https://github.com/user-attachments/assets/9ba79879-8a70-43f7-8059-a71b8d45b644
+https://github.com/user-attachments/assets/e0b80db6-8a0c-4508-8e0c-5e5a664c6ec4
 
 ## 프로젝트 생성
 
-https://github.com/user-attachments/assets/225bc5c0-f1b8-475f-baf1-1476a810c3af
+https://github.com/user-attachments/assets/a195759c-54ef-4341-b192-504bacc1e570
 
 ## 사이드바
 
-https://github.com/user-attachments/assets/af9b590c-2d59-44d1-a6e1-3aedb0357832
+https://github.com/user-attachments/assets/74a8c148-97e3-4d3f-87b3-4b66eee0513c
 
 ---
 
