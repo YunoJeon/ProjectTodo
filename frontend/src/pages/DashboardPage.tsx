@@ -6,6 +6,7 @@ import TodoDetailModal from "../components/TodoDetailModal";
 import TodoListVirtualized from "../components/TodoListVirtualized";
 import ProjectListVirtualized from "../components/ProjectListVirtualized";
 import ProjectCreateModal from "../components/ProjectCreateModal";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 
 const {Option} = Select;
 
@@ -47,6 +48,8 @@ const DashboardPage: React.FC = () => {
       const [projectModalVisible, setProjectModalVisible] = useState(false);
       const [detailModalVisible, setDetailModalVisible] = useState(false);
       const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null);
+      const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+      const [projectDetailModalVisible, setProjectDetailModalVisible] = useState(false);
       const [page, setPage] = useState(1);
       const [projectPage, setProjectPage] = useState(1);
       const [hasMore, setHasMore] = useState(true);
@@ -213,7 +216,9 @@ const DashboardPage: React.FC = () => {
 
             <ProjectListVirtualized
                 projects={projects}
-                onProjectClick={() => {
+                onProjectClick={(id) => {
+                  setSelectedProjectId(id.toString());
+                  setProjectDetailModalVisible(true);
                 }}
                 loadMore={loadMoreProjects}
                 hasMore={hasMoreProjects}
@@ -238,6 +243,15 @@ const DashboardPage: React.FC = () => {
                 visible={projectModalVisible}
                 onClose={() => setProjectModalVisible(false)}
                 onProjectCreated={() => {
+                  fetchData(true);
+                }}
+            />
+
+            <ProjectDetailModal
+                projectId={selectedProjectId}
+                visible={projectDetailModalVisible}
+                onClose={() => setProjectDetailModalVisible(false)}
+                onProjectUpdated={() => {
                   fetchData(true);
                 }}
             />

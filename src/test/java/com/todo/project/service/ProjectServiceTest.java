@@ -87,7 +87,7 @@ class ProjectServiceTest {
   void get_projects_success() {
     // given
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
-    when(projectRepository.findByOwner(testUser, PageRequest.of(0, 10))).thenReturn(
+    when(projectRepository.findProjectByUser(testUser, PageRequest.of(0, 10))).thenReturn(
         new PageImpl<>(List.of(testProject)));
     // when
     Page<ProjectPageResponseDto> projects = projectService.getProjects(auth, 1, 10);

@@ -231,3 +231,51 @@ npm install
 ```
 npm start
 ```
+
+---
+
+## 회원가입
+
+https://github.com/user-attachments/assets/abdd68e0-92f7-49ae-9181-85423a629bed
+
+## 로그인
+
+https://github.com/user-attachments/assets/f8934cbd-b6f8-45ee-96d3-ed96dbcfced0
+
+## 할일생성
+
+https://github.com/user-attachments/assets/0fc6d0b6-1214-4108-a3d1-51e5f5c6f3d8
+
+## 무한로딩
+
+https://github.com/user-attachments/assets/93c24bf2-7386-44d7-9f10-ccc932166de6
+
+## 할일 상세 보기 및 수정
+
+https://github.com/user-attachments/assets/21bb6d46-96cc-4bb3-9c0b-351c449b3c45
+
+## 할일 필터링
+
+https://github.com/user-attachments/assets/9ba79879-8a70-43f7-8059-a71b8d45b644
+
+## 프로젝트 생성
+
+https://github.com/user-attachments/assets/225bc5c0-f1b8-475f-baf1-1476a810c3af
+
+## 사이드바
+
+https://github.com/user-attachments/assets/af9b590c-2d59-44d1-a6e1-3aedb0357832
+
+---
+
+## 모바일 화면
+
+<img width="386" alt="스크린샷 2025-02-16 오후 9 35 06" src="https://github.com/user-attachments/assets/26977fb6-1e9e-4746-8615-2c1f6cd14cd9" />
+<img width="326" alt="스크린샷 2025-02-16 오후 9 35 36" src="https://github.com/user-attachments/assets/d7e278d5-3ad8-494e-8830-07ec616cb466" />
+
+## 태블릿 화면
+
+<img width="681" alt="스크린샷 2025-02-16 오후 9 35 19" src="https://github.com/user-attachments/assets/c5144b2c-9d74-4969-a7b1-ca478c6f35a4" />
+
+---
+
