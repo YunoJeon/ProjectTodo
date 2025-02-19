@@ -1,5 +1,6 @@
 package com.todo.todo.mapper;
 
+import com.todo.search.dto.SearchResponseDto;
 import com.todo.todo.dto.TodoFilterRequestDto;
 import com.todo.todo.entity.Todo;
 import java.util.List;
@@ -11,5 +12,5 @@ public interface TodoMapper {
 
   List<Todo> filterTodos(TodoFilterRequestDto todoFilterRequestDto);
 
-  List<Todo> searchTodosByTitle(@Param("keyword") String keyword);
+  List<SearchResponseDto> searchTodosAndProjects(@Param("keyword") String keyword, @Param("userId") Long userId);
 }

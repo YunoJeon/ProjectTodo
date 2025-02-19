@@ -5,6 +5,7 @@ import ResponsiveLayout from "../components/ResponsiveLayout";
 import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import ProjectTodosPage from "../pages/ProjectTodosPage";
+import SearchResultPage from "../pages/SearchResultPage";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
             <Route path="sign-up" element={<SignUpPage/>}/>
             <Route path="dashboard" element={<DashboardPage/>}/>
             <Route path="projects/:projectId/todos" element={<ProjectTodosPage/>}/>
+            <Route path="search" element={<SearchResultPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

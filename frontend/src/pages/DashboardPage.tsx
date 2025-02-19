@@ -161,7 +161,7 @@ const DashboardPage: React.FC = () => {
 
       return (
           <div style={{padding: '2rem'}}>
-            <Typography.Title level={1}>내 할일</Typography.Title>
+            <Typography.Title level={1}>📝 내 할일</Typography.Title>
             <Space style={{marginBottom: "1rem"}}>
               <Button
                   type={showAllCompleted ? "primary" : "default"}
@@ -205,7 +205,7 @@ const DashboardPage: React.FC = () => {
                 loadMore={loadMoreData}
                 hasMore={hasMore}
             />
-            <Typography.Title level={1}>내 프로젝트</Typography.Title>
+            <Typography.Title level={1}>📁 내 프로젝트</Typography.Title>
             <Button
                 type="primary"
                 onClick={() => setProjectModalVisible(true)}
