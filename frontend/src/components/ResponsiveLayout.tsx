@@ -76,6 +76,9 @@ const ResponsiveLayOut: React.FC = () => {
                   <Menu.Item key="dashboard">
                     <Link to="/dashboard">대시보드</Link>
                   </Menu.Item>
+                  <Menu.Item key="my-info">
+                    <Link to="/users/me">내 정보 조회</Link>
+                  </Menu.Item>
                   <Menu.Item key="logout" style={{display: "flex", alignItems: "center"}}>
                     <LogoutButton/>
                   </Menu.Item>
