@@ -1,19 +1,22 @@
 import {Button, DatePicker, Form, Input, message, Modal, Select} from "antd";
 import moment from "moment";
 import api from "../services/api";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import PriorityToggle from "./PriorityToggle";
+import {useParams} from "react-router-dom";
 
 const {Option} = Select;
 
 interface CreateTodoModalProps {
+  projectId?: string;
   visible: boolean;
   onClose: () => void;
   onTodoCreated: () => void;
+  isProjectTodo?: boolean;
 }
 
 interface CreateTodoFormValues {
-  projectId?: number;
+  projectId?: string;
   title: string;
   description?: string;
   todoCategory: string;
@@ -21,12 +24,29 @@ interface CreateTodoFormValues {
   dueDate: moment.Moment;
 }
 
-const TodoCreateModal: React.FC<CreateTodoModalProps> = ({visible, onClose, onTodoCreated}) => {
+const TodoCreateModal: React.FC<CreateTodoModalProps> = ({
+                                                           visible,
+                                                           onClose,
+                                                           onTodoCreated,
+                                                           isProjectTodo = false
+                                                         }) => {
+  const {projectId} = useParams<{ projectId: string }>();
   const [form] = Form.useForm();
   const [isPriority, setPriority] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isProjectTodo) {
+      form.resetFields();
+      form.setFieldsValue({todoCategory: "WORK"});
+    }
+  }, [isProjectTodo, form]);
+
   const onFinish = (values: CreateTodoFormValues) => {
+
     const payload = {
       ...values,
+      projectId: isProjectTodo ? projectId : null,
+      todoCategory: isProjectTodo ? "WORK" : values.todoCategory,
       dueDate: values.dueDate ? values.dueDate.format("YYYY-MM-DD HH:mm:ss") : null,
       isPriority
     };
@@ -39,8 +59,12 @@ const TodoCreateModal: React.FC<CreateTodoModalProps> = ({visible, onClose, onTo
       onClose();
     })
     .catch((error) => {
-      console.error(error);
-      message.error('할일 생성에 실패했습니다.');
+      if (error.response && error.status === 403) {
+        console.error("할일 생성 실패", error);
+        message.error("생성 권한이 없습니다.")
+      } else {
+        message.error('할일 생성에 실패했습니다.');
+      }
     });
   };
   return (
@@ -54,18 +78,24 @@ const TodoCreateModal: React.FC<CreateTodoModalProps> = ({visible, onClose, onTo
             form={form}
             layout="vertical"
             onFinish={onFinish}
-            initialValues={{isPriority: false}}
+            initialValues={{
+              isPriority: false,
+              todoCategory: isProjectTodo ? "WORK" : undefined
+            }}
         >
-          <Form.Item
-              label="카테고리"
-              name="todoCategory"
-              rules={[{required: true, message: "카테고리를 설정해 주세요."}]}
-          >
-            <Select placeholder="카테고리 선택">
-              <Option value="INDIVIDUAL">😁 개인용 이예요</Option>
-              <Option value="WORK">💼 업무용 이예요</Option>
-            </Select>
-          </Form.Item>
+
+          {!isProjectTodo && (
+              <Form.Item
+                  label="카테고리"
+                  name="todoCategory"
+                  rules={[{required: true, message: "카테고리를 설정해 주세요."}]}
+              >
+                <Select placeholder="카테고리 선택">
+                  <Option value="INDIVIDUAL">😁 개인용 이예요</Option>
+                  <Option value="WORK">💼 업무용 이예요</Option>
+                </Select>
+              </Form.Item>
+          )}
           <Form.Item
               label="제목"
               name="title"

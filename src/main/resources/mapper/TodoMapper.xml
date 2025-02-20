@@ -35,7 +35,9 @@
     FROM todos t
     LEFT JOIN users u ON t.author_id = u.id
     <where>
-      AND t.author_id = #{authorId}
+      <if test="authorId != null">
+        AND t.author_id = #{authorId}
+      </if>
       <if test="projectId != null">
         AND t.project_id = #{projectId}
       </if>
@@ -51,20 +53,15 @@
     </where>
   </select>
 
-  <select id="searchTodosByTitle" parameterType="String" resultMap="TodoResultMap">
-    SELECT t.id,
-           t.project_id,
-           t.title,
-           t.description,
-           t.todo_category,
-           t.is_completed,
-           t.is_priority,
-           t.version,
-           t.due_date,
-           t.created_at,
-           u.id as author_id
+  <select id="searchTodosAndProjects" resultType="com.todo.search.dto.SearchResponseDto">
+    SELECT t.id, t.title AS name, 'TODO' AS TYPE, t.is_completed
     FROM todos t
-           LEFT JOIN users u ON t.author_id = u.id
     WHERE t.title LIKE CONCAT('%', #{keyword}, '%')
+    UNION
+    SELECT p.id, p.name AS name, 'PROJECT' AS TYPE, NULL AS is_completed
+    FROM projects p
+    LEFT JOIN collaborators c ON c.project_id = p.id
+    WHERE p.name LIKE CONCAT('%', #{keyword}, '%')
+    AND (p.owner_id = #{userId} OR (c.collaborator_id = #{userId} AND c.confirm_type = 'TRUE'))
   </select>
 </mapper>

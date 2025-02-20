@@ -44,9 +44,9 @@ public class UserService {
     return UserResponseDto.fromEntity(user);
   }
 
-  public UserResponseDto getUser(Long userId) {
+  public UserResponseDto getUser(String email) {
 
-    return UserResponseDto.fromEntity(userQueryService.findById(userId));
+    return UserResponseDto.fromEntity(userQueryService.findByEmail(email));
   }
 
   @Transactional

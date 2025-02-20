@@ -6,6 +6,7 @@ import TodoDetailModal from "../components/TodoDetailModal";
 import TodoListVirtualized from "../components/TodoListVirtualized";
 import ProjectListVirtualized from "../components/ProjectListVirtualized";
 import ProjectCreateModal from "../components/ProjectCreateModal";
+import ProjectDetailModal from "../components/ProjectDetailModal";
 
 const {Option} = Select;
 
@@ -47,6 +48,8 @@ const DashboardPage: React.FC = () => {
       const [projectModalVisible, setProjectModalVisible] = useState(false);
       const [detailModalVisible, setDetailModalVisible] = useState(false);
       const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null);
+      const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+      const [projectDetailModalVisible, setProjectDetailModalVisible] = useState(false);
       const [page, setPage] = useState(1);
       const [projectPage, setProjectPage] = useState(1);
       const [hasMore, setHasMore] = useState(true);
@@ -157,42 +160,49 @@ const DashboardPage: React.FC = () => {
       }
 
       return (
-          <div style={{padding: '2rem'}}>
-            <Typography.Title level={1}>내 할일</Typography.Title>
-            <Space style={{marginBottom: "1rem"}}>
+          <div style={{padding: "2rem"}}>
+            <Typography.Title level={1}>📝 내 할일</Typography.Title>
+            <div style={{marginBottom: "0.5rem"}}>
+              <Space style={{marginBottom: "0.5rem"}}>
+                <Button
+                    type={showAllCompleted ? "primary" : "default"}
+                    onClick={() => {
+                      setShowAllCompleted((prev) => !prev);
+                    }}
+                >
+                  ✅
+                </Button>
+                <Button
+                    type={showImportantOnly ? "primary" : "default"}
+                    onClick={() => {
+                      setShowImportantOnly((prev) => !prev);
+                    }}
+                >
+                  ⭐️
+                </Button>
+                <Select
+                    defaultValue="전체"
+                    style={{width: 120}}
+                    value={filterCategory}
+                    onChange={(value) => {
+                      setFilterCategory(value);
+                    }}
+                >
+                  <Option value="전체">𝘼 전체</Option>
+                  <Option value="INDIVIDUAL">😁 개인</Option>
+                  <Option value="WORK">💼 업무</Option>
+                </Select>
+              </Space>
+            </div>
+            <div>
               <Button
-                  type={showAllCompleted ? "primary" : "default"}
-                  onClick={() => {
-                    setShowAllCompleted((prev) => !prev);
-                  }}
+                  type="primary"
+                  onClick={() => setModalVisible(true)}
               >
-                ✅
+                새 할일 생성
               </Button>
-              <Button
-                  type={showImportantOnly ? "primary" : "default"}
-                  onClick={() => {
-                    setShowImportantOnly((prev) => !prev);
-                  }}
-              >
-                ⭐️
-              </Button>
-              <Select
-                  defaultValue="전체"
-                  style={{width: 120}}
-                  value={filterCategory}
-                  onChange={(value) => {
-                    setFilterCategory(value);
-                  }}
-              >
-                <Option value="전체">𝘼 전체</Option>
-                <Option value="INDIVIDUAL">😁 개인</Option>
-                <Option value="WORK">💼 업무</Option>
-              </Select>
-            </Space>
-            <Button type="primary" onClick={() => setModalVisible(true)}
-                    style={{marginBottom: "1rem"}}>
-              새 할일 생성
-            </Button>
+            </div>
+
             <TodoListVirtualized
                 todos={todos}
                 onTodoClick={(id) => {
@@ -202,7 +212,7 @@ const DashboardPage: React.FC = () => {
                 loadMore={loadMoreData}
                 hasMore={hasMore}
             />
-            <Typography.Title level={1}>내 프로젝트</Typography.Title>
+            <Typography.Title level={1}>📁 내 프로젝트</Typography.Title>
             <Button
                 type="primary"
                 onClick={() => setProjectModalVisible(true)}
@@ -213,7 +223,9 @@ const DashboardPage: React.FC = () => {
 
             <ProjectListVirtualized
                 projects={projects}
-                onProjectClick={() => {
+                onProjectClick={(id) => {
+                  setSelectedProjectId(id.toString());
+                  setProjectDetailModalVisible(true);
                 }}
                 loadMore={loadMoreProjects}
                 hasMore={hasMoreProjects}
@@ -238,6 +250,15 @@ const DashboardPage: React.FC = () => {
                 visible={projectModalVisible}
                 onClose={() => setProjectModalVisible(false)}
                 onProjectCreated={() => {
+                  fetchData(true);
+                }}
+            />
+
+            <ProjectDetailModal
+                projectId={selectedProjectId}
+                visible={projectDetailModalVisible}
+                onClose={() => setProjectDetailModalVisible(false)}
+                onProjectUpdated={() => {
                   fetchData(true);
                 }}
             />

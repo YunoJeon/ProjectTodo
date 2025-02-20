@@ -43,11 +43,11 @@ public class UserController {
     return ResponseEntity.ok(userService.changePassword(auth, changePasswordDto));
   }
 
-  @GetMapping("/info/{userId}")
+  @GetMapping("/info/{email}")
   @Operation(summary = "회원 조회 API", description = "특정 회원의 정보를 조회할 수 있습니다.")
-  public ResponseEntity<UserResponseDto> getUser(@PathVariable Long userId) {
+  public ResponseEntity<UserResponseDto> getUser(@PathVariable String email) {
 
-    return ResponseEntity.ok(userService.getUser(userId));
+    return ResponseEntity.ok(userService.getUser(email));
   }
 
   @PostMapping("/me/profile")

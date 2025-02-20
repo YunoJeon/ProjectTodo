@@ -96,9 +96,15 @@ public class CollaboratorService {
   public List<CollaboratorsDto> updateCollaborator(Authentication auth, Long projectId,
       Long collaboratorId, RoleType roleType) {
 
+    Long userId = userQueryService.findByEmail(auth.getName()).getId();
+
     Project project = findOwnerWithProject(auth, projectId);
 
     Collaborator collaborator = collaboratorQueryService.findById(collaboratorId);
+
+    if (userId.equals(collaborator.getCollaborator().getId())) {
+      throw new CustomException(FORBIDDEN, "자기 자신은 수정할 수 없습니다.");
+    }
 
     collaborator.update(roleType);
 
@@ -116,6 +122,10 @@ public class CollaboratorService {
     Collaborator collaborator = collaboratorQueryService.findById(collaboratorId);
 
     User deletedUser = collaborator.getCollaborator();
+
+    if (deletedUser.getId().equals(project.getOwner().getId())) {
+      throw new CustomException(FORBIDDEN, "자기 자신은 삭제할 수 없습니다.");
+    }
 
     collaboratorRepository.delete(collaborator);
 
