@@ -108,7 +108,7 @@ public class TodoService {
 
       validCollaborator(project, user);
 
-      filterAuthorId = project.getOwner().getId().equals(user.getId()) ? user.getId() : null;
+      filterAuthorId = null;
     }
 
     TodoFilterRequestDto todoFilterRequestDto = new TodoFilterRequestDto(

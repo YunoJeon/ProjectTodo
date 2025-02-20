@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import api from "../services/api";
-import {Modal, Spin, Typography} from "antd";
+import {message, Modal, Spin, Typography} from "antd";
 import moment from "moment";
 import TodoUpdateForm from "./TodoUpdateFormProps";
 import {useForm} from "antd/es/form/Form";
@@ -43,7 +43,7 @@ const TodoDetailModal: React.FC<TodoDetailModalProps> = ({todoId, visible, onClo
         })
       })
       .catch(error => {
-        console.error('투두 상세 정보 조회 실패', error);
+        console.error('할일 상세 정보 조회 실패', error);
       })
       .finally(() => {
         setLoading(false);
@@ -63,7 +63,12 @@ const TodoDetailModal: React.FC<TodoDetailModalProps> = ({todoId, visible, onClo
       onTodoUpdated();
     })
     .catch((error) => {
-      console.error("투두 업데이트 실패", error);
+      console.error("할일 업데이트 실패", error);
+      if (error.response && error.status === 403) {
+        message.error("수정 권한이 없습니다.");
+      } else {
+        message.error("할일 업데이트 중 오류가 발생했습니다.");
+      }
     });
   };
 

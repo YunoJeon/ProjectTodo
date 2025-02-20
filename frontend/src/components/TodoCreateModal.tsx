@@ -30,7 +30,7 @@ const TodoCreateModal: React.FC<CreateTodoModalProps> = ({
                                                            onTodoCreated,
                                                            isProjectTodo = false
                                                          }) => {
-  const {projectId} = useParams<{projectId: string}>();
+  const {projectId} = useParams<{ projectId: string }>();
   const [form] = Form.useForm();
   const [isPriority, setPriority] = useState<boolean>(false);
 
@@ -59,8 +59,12 @@ const TodoCreateModal: React.FC<CreateTodoModalProps> = ({
       onClose();
     })
     .catch((error) => {
-      console.error(error);
-      message.error('할일 생성에 실패했습니다.');
+      if (error.response && error.status === 403) {
+        console.error("할일 생성 실패", error);
+        message.error("생성 권한이 없습니다.")
+      } else {
+        message.error('할일 생성에 실패했습니다.');
+      }
     });
   };
   return (

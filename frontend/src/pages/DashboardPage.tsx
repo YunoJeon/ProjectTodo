@@ -160,42 +160,49 @@ const DashboardPage: React.FC = () => {
       }
 
       return (
-          <div style={{padding: '2rem'}}>
+          <div style={{padding: "2rem"}}>
             <Typography.Title level={1}>📝 내 할일</Typography.Title>
-            <Space style={{marginBottom: "1rem"}}>
+            <div style={{marginBottom: "0.5rem"}}>
+              <Space style={{marginBottom: "0.5rem"}}>
+                <Button
+                    type={showAllCompleted ? "primary" : "default"}
+                    onClick={() => {
+                      setShowAllCompleted((prev) => !prev);
+                    }}
+                >
+                  ✅
+                </Button>
+                <Button
+                    type={showImportantOnly ? "primary" : "default"}
+                    onClick={() => {
+                      setShowImportantOnly((prev) => !prev);
+                    }}
+                >
+                  ⭐️
+                </Button>
+                <Select
+                    defaultValue="전체"
+                    style={{width: 120}}
+                    value={filterCategory}
+                    onChange={(value) => {
+                      setFilterCategory(value);
+                    }}
+                >
+                  <Option value="전체">𝘼 전체</Option>
+                  <Option value="INDIVIDUAL">😁 개인</Option>
+                  <Option value="WORK">💼 업무</Option>
+                </Select>
+              </Space>
+            </div>
+            <div>
               <Button
-                  type={showAllCompleted ? "primary" : "default"}
-                  onClick={() => {
-                    setShowAllCompleted((prev) => !prev);
-                  }}
+                  type="primary"
+                  onClick={() => setModalVisible(true)}
               >
-                ✅
+                새 할일 생성
               </Button>
-              <Button
-                  type={showImportantOnly ? "primary" : "default"}
-                  onClick={() => {
-                    setShowImportantOnly((prev) => !prev);
-                  }}
-              >
-                ⭐️
-              </Button>
-              <Select
-                  defaultValue="전체"
-                  style={{width: 120}}
-                  value={filterCategory}
-                  onChange={(value) => {
-                    setFilterCategory(value);
-                  }}
-              >
-                <Option value="전체">𝘼 전체</Option>
-                <Option value="INDIVIDUAL">😁 개인</Option>
-                <Option value="WORK">💼 업무</Option>
-              </Select>
-            </Space>
-            <Button type="primary" onClick={() => setModalVisible(true)}
-                    style={{marginBottom: "1rem"}}>
-              새 할일 생성
-            </Button>
+            </div>
+
             <TodoListVirtualized
                 todos={todos}
                 onTodoClick={(id) => {
