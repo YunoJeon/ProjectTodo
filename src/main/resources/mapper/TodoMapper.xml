@@ -35,7 +35,9 @@
     FROM todos t
     LEFT JOIN users u ON t.author_id = u.id
     <where>
-      AND t.author_id = #{authorId}
+      <if test="authorId != null">
+        AND t.author_id = #{authorId}
+      </if>
       <if test="projectId != null">
         AND t.project_id = #{projectId}
       </if>

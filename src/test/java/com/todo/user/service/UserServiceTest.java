@@ -82,7 +82,7 @@ class UserServiceTest {
     // given
     when(userQueryService.findById(testUser.getId())).thenReturn(testUser);
     // when
-    UserResponseDto responseDto = userService.getUser(testUser.getId());
+    UserResponseDto responseDto = userService.getUser(testUser.getEmail());
     // then
     assertEquals(testUser.getEmail(), responseDto.email());
   }

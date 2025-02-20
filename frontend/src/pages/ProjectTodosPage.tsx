@@ -5,6 +5,8 @@ import api from "../services/api";
 import TodoListVirtualized from "../components/TodoListVirtualized";
 import TodoCreateModal from "../components/TodoCreateModal";
 import TodoDetailModal from "../components/TodoDetailModal";
+import CollaboratorInviteModal from "../components/CollaboratorInviteModal";
+import CollaboratorsModal from "../components/CollaboratorsModal";
 
 interface Todo {
   id: number;
@@ -24,6 +26,7 @@ interface TodoResponse {
 
 const ProjectTodosPage: React.FC = () => {
   const {projectId} = useParams<{ projectId: string }>();
+  const numericProjectId = Number(projectId);
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -33,6 +36,8 @@ const ProjectTodosPage: React.FC = () => {
   const [showImportantOnly, setShowImportantOnly] = useState<boolean>(false);
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null);
+  const [inviteModalVisible, setInviteModalVisible] = useState(false);
+  const [collaboratorsModalVisible, setCollaboratorsModalVisible] = useState(false);
 
   const fetchTodos = async (currentPage: number) => {
     const params: any = {
@@ -104,19 +109,57 @@ const ProjectTodosPage: React.FC = () => {
   return (
       <div style={{padding: "2rem"}}>
         <Typography.Title level={1}>🧑‍💻 협업 & 공동작업 하기</Typography.Title>
-        <Space style={{marginBottom: "1rem"}}>
-          <Button type={showAllCompleted ? "primary" : "default"}
+        <div style={{marginBottom: "1rem"}}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%"
+          }}
+          >
+            <Space>
+              <Button
+                  type={showAllCompleted ? "primary" : "default"}
                   onClick={() => setShowAllCompleted((prev) => !prev)}>
-            ✅
-          </Button>
-          <Button type={showImportantOnly ? "primary" : "default"}
+                ✅
+              </Button>
+              <Button
+                  type={showImportantOnly ? "primary" : "default"}
                   onClick={() => setShowImportantOnly((prev) => !prev)}>
-            ⭐️
-          </Button>
-        </Space>
-        <Button type="primary" onClick={() => setModalVisible(true)} style={{marginBottom: "1rem"}}>
-          새 할일 생성
-        </Button>
+                ⭐️
+              </Button>
+            </Space>
+            <Button
+                type="primary"
+                onClick={() => setInviteModalVisible(true)}
+            >
+              협업자 초대
+            </Button>
+          </div>
+          <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                marginTop: "0.5rem"
+              }}
+          >
+            <Button
+                type="primary"
+                onClick={() => setModalVisible(true)}
+            >
+              새 할일 생성
+            </Button>
+            <Button
+                type="primary"
+                onClick={() => setCollaboratorsModalVisible(true)}
+            >
+              협업자 목록 보기
+            </Button>
+          </div>
+        </div>
+
         <TodoListVirtualized
             todos={todos}
             loadMore={loadMoreData}
@@ -138,8 +181,22 @@ const ProjectTodosPage: React.FC = () => {
             onClose={() => setDetailModalVisible(false)}
             onTodoUpdated={() => fetchData(true)}
         />
+
+        <CollaboratorInviteModal
+            projectId={numericProjectId}
+            visible={inviteModalVisible}
+            onClose={() => setInviteModalVisible(false)}
+            onCollaboratorAdded={() => message.success("협업자가 추가되었습니다.")}
+        />
+
+        <CollaboratorsModal
+            projectId={numericProjectId}
+            visible={collaboratorsModalVisible}
+            onClose={() => setCollaboratorsModalVisible(false)}
+        />
       </div>
-  );
+  )
+      ;
 };
 
 export default ProjectTodosPage;
