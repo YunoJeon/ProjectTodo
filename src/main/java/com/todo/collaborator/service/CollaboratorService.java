@@ -153,14 +153,14 @@ public class CollaboratorService {
   }
 
   @Transactional
-  public void updateConfirm(Authentication auth, Long projectId, Long collaboratorId,
-      ConfirmType confirmType) {
+  public void updateConfirm(Authentication auth, Long projectId, ConfirmType confirmType) {
 
     User invitedUser = userQueryService.findByEmail(auth.getName());
 
     Project project = projectQueryService.findById(projectId);
 
-    Collaborator collaborator = collaboratorQueryService.findById(collaboratorId);
+    Collaborator collaborator = collaboratorQueryService.findByProjectAndCollaboratorIsConfirmedFalse(
+        project, invitedUser);
 
     if (!invitedUser.getId().equals(collaborator.getCollaborator().getId())) {
       throw new CustomException(FORBIDDEN);

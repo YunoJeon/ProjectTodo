@@ -39,16 +39,22 @@ public class Notification {
 
   private String message;
 
+  private boolean isInvitation;
+
+  private Long projectId;
+
   private boolean isRead;
 
   @CreatedDate
   private LocalDateTime createdAt;
 
-  public static Notification of(User user, String message) {
+  public static Notification of(User user, String message, boolean isInvitation, Long projectId) {
 
     return Notification.builder()
         .user(user)
         .message(message)
+        .isInvitation(isInvitation)
+        .projectId(projectId)
         .isRead(false)
         .build();
   }

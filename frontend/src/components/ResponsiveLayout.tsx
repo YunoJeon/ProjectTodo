@@ -1,11 +1,13 @@
-import {Button, Drawer, Layout, Menu} from "antd";
+import {Button, Drawer, Layout, Menu, Popover} from "antd";
 import {Link, Outlet, useNavigate} from "react-router-dom";
-import {MenuOutlined, SearchOutlined} from "@ant-design/icons";
+import {BellOutlined, MenuOutlined, SearchOutlined} from "@ant-design/icons";
 import "../style/ResponsiveLayout.css";
 import React, {useState} from "react";
 import LogoutButton from "./LogoutButton";
 import {useAuth} from "../context/AuthContext";
 import SearchModal from "./SearchModal";
+import NotificationDropdown from "./NotificationDropdown";
+
 
 const {Header, Content, Footer} = Layout;
 
@@ -13,6 +15,7 @@ const ResponsiveLayOut: React.FC = () => {
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [searchVisible, setSearchVisible] = useState(false);
   const {isLoggedIn} = useAuth();
+  const [reloadSignal, setReloadSignal] = useState(0);
   const navigate = useNavigate();
 
   const showDrawer = () => {
@@ -46,6 +49,25 @@ const ResponsiveLayOut: React.FC = () => {
                 icon={<SearchOutlined style={{color: "#fff", fontSize: "20px"}}/>}
                 onClick={() => setSearchVisible(true)}
             />
+            <Popover
+                content={<NotificationDropdown reloadSignal={reloadSignal}/>}
+                trigger="click"
+                placement="bottomRight"
+                onOpenChange={(open) => {
+                  if (open) {
+                    setReloadSignal(prev => prev + 1);
+                  }
+                }}
+                getPopupContainer={() => document.body}
+                overlayInnerStyle={{width: 300}}
+            >
+              <Button
+                  type="text"
+                  icon={
+                    <BellOutlined style={{color: "#fff", fontSize: "20px"}}/>
+                  }
+              />
+            </Popover>
             <Button
                 type="text"
                 icon={<MenuOutlined style={{color: "#fff", fontSize: "20px"}}/>}
@@ -93,8 +115,7 @@ const ResponsiveLayOut: React.FC = () => {
         </Content>
         <Footer style={{textAlign: 'center'}}>Todo App ©2025</Footer>
       </Layout>
-  )
-      ;
+  );
 };
 
 export default ResponsiveLayOut;

@@ -58,14 +58,13 @@ public class CollaboratorController {
         collaboratorService.updateCollaborator(auth, projectId, collaboratorId, roleType));
   }
 
-  @PutMapping("/{projectId}/collaborators/{collaboratorId}/confirm")
+  @PutMapping("/{projectId}/collaborators/confirm")
   @Operation(summary = "협업 인원 초대 승인 API", description = "프로젝트에 초대된 사용자가 초대를 승인할 수 있습니다.")
   public ResponseEntity<Void> updateCornFirm(Authentication auth,
       @PathVariable("projectId") Long projectId,
-      @PathVariable("collaboratorId") Long collaboratorId,
       @RequestBody ConfirmType confirmType) {
 
-    collaboratorService.updateConfirm(auth, projectId, collaboratorId, confirmType);
+    collaboratorService.updateConfirm(auth, projectId, confirmType);
 
     return ResponseEntity.ok().build();
   }
