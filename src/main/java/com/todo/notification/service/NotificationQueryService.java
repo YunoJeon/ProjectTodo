@@ -18,6 +18,6 @@ public class NotificationQueryService {
 
   public Page<Notification> findByUserIsReadFalse(User user, Pageable pageable) {
 
-    return notificationRepository.findByUserAndReadFalse(user, pageable);
+    return notificationRepository.findByUserAndIsReadFalse(user, pageable);
   }
 }
