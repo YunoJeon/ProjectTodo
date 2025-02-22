@@ -44,22 +44,16 @@ public class Comment {
   @ManyToOne(fetch = LAZY)
   private Todo todo;
 
-  private Long parentCommentId;
-
   private String content;
 
   @CreatedDate
   private LocalDateTime createdAt;
-
-  private LocalDateTime deletedAt;
 
   public static Comment of(User commentAuthor, Todo todo, CommentDto commentDto) {
 
     return Comment.builder()
         .commentAuthor(commentAuthor)
         .todo(todo)
-        .parentCommentId(commentDto.parentCommentId() == null ?
-            null : commentDto.parentCommentId())
         .content(commentDto.content())
         .build();
   }
@@ -67,6 +61,5 @@ public class Comment {
   public void update(CommentUpdateDto commentUpdateDto) {
 
     content = commentUpdateDto.content();
-    deletedAt = commentUpdateDto.isDeleted() ? LocalDateTime.now() : null;
   }
 }
