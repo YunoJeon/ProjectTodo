@@ -4,6 +4,7 @@ import {message, Modal, Spin, Typography} from "antd";
 import moment from "moment";
 import TodoUpdateForm from "./TodoUpdateFormProps";
 import {useForm} from "antd/es/form/Form";
+import CommentSection from "./CommentSection";
 
 interface TodoDetail {
   id: number;
@@ -26,7 +27,12 @@ interface TodoDetailModalProps {
   onTodoUpdated: () => void;
 }
 
-const TodoDetailModal: React.FC<TodoDetailModalProps> = ({todoId, visible, onClose, onTodoUpdated}) => {
+const TodoDetailModal: React.FC<TodoDetailModalProps> = ({
+                                                           todoId,
+                                                           visible,
+                                                           onClose,
+                                                           onTodoUpdated
+                                                         }) => {
   const [todo, setTodo] = useState<TodoDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [form] = useForm();
@@ -49,7 +55,7 @@ const TodoDetailModal: React.FC<TodoDetailModalProps> = ({todoId, visible, onClo
         setLoading(false);
       });
     }
-  }, [todoId]);
+  }, [todoId, visible]);
 
   const handleSubmit = (values: any) => {
     const payload = {
@@ -82,18 +88,27 @@ const TodoDetailModal: React.FC<TodoDetailModalProps> = ({todoId, visible, onClo
         {loading ? (
             <Spin style={{display: "block", textAlign: "center", marginTop: "2rem"}}/>
         ) : todo ? (
-            <TodoUpdateForm
-                initialValues={{
-                  projectId: todo.projectId,
-                  title: todo.title,
-                  description: todo.description,
-                  todoCategory: todo.todoCategory,
-                  isPriority: todo.isPriority,
-                  isCompleted: todo.isCompleted,
-                  dueDate: todo.dueDate ? moment(todo.dueDate) : moment()
-                }}
-                onSubmit={handleSubmit}
-            />
+            <>
+              <TodoUpdateForm
+                  initialValues={{
+                    projectId: todo.projectId,
+                    title: todo.title,
+                    description: todo.description,
+                    todoCategory: todo.todoCategory,
+                    isPriority: todo.isPriority,
+                    isCompleted: todo.isCompleted,
+                    dueDate: todo.dueDate ? moment(todo.dueDate) : moment()
+                  }}
+                  onSubmit={handleSubmit}
+              />
+              {todo.projectId ? (
+                  <CommentSection todoId={todo.id} visible={visible}/>
+              ) : (
+                  <Typography.Text type="secondary" style={{fontSize: "16px"}}>
+                    💬 댓글 기능은 프로젝트 투두에서만 지원됩니다. 📣
+                  </Typography.Text>
+              )}
+            </>
         ) : (
             <Typography.Text>할일을 찾을 수 없습니다.</Typography.Text>
         )}

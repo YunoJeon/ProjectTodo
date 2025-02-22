@@ -99,7 +99,6 @@ class CommentServiceTest {
 
     comment = Comment.builder()
         .id(100L)
-        .parentCommentId(null)
         .content("댓글요")
         .commentAuthor(testUser)
         .build();
@@ -151,9 +150,8 @@ class CommentServiceTest {
         project, testUser)).thenReturn(collaborator);
     when(commentRepository.findById(comment.getId())).thenReturn(Optional.ofNullable(comment));
 
-    CommentUpdateDto updateDto = new CommentUpdateDto("수정요", false);
     // when
-    commentService.updateComments(auth, todo.getId(), comment.getId(), updateDto);
+    commentService.updateComments(auth, todo.getId(), comment.getId(), new CommentUpdateDto("수정요"));
     // then
     assertEquals("수정요", comment.getContent());
   }
@@ -180,7 +178,7 @@ class CommentServiceTest {
     // when
     CustomException e = assertThrows(CustomException.class,
         () -> commentService.updateComments(auth, todo.getId(), anotherComment.getId(),
-            new CommentUpdateDto("수정요", false)));
+            new CommentUpdateDto("수정요")));
     // then
     assertEquals(FORBIDDEN, e.getErrorCode());
   }
