@@ -310,7 +310,7 @@ https://github.com/user-attachments/assets/65162f8f-40f9-483f-bc64-598d5e038361
 
 https://github.com/user-attachments/assets/af38733b-378b-4d47-aaf8-75c87c1b661e
 
-## 
+## 프로젝트 내의 로그 기록 및 할일 복구
 
 https://github.com/user-attachments/assets/5309a333-ba87-4cda-8849-bb4de08eb1ae
 
