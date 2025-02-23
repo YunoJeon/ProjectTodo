@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import api from "../services/api";
-import {message, Modal, Spin, Typography} from "antd";
+import {Button, message, Modal, Spin, Typography} from "antd";
 import moment from "moment";
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList as List} from "react-window";
@@ -32,10 +32,26 @@ const ActivityLogModal: React.FC<ActivityLogModalProps> = ({
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  const handleRestore = async (todoId: number, snapshotId: number) => {
+    try {
+      await api.post(`/todos/${todoId}/restore/${snapshotId}`);
+      message.success("할일이 복구되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.error("할일 복구 실패", error);
+      message.error("할일 복구에 실패하였습니다.");
+    }
+  }
+
   const fetchActivityLogs = async (currentPage: number) => {
     setLoading(true);
     try {
-      const response = await api.get(`/projects/${projectId}/logs`, {params: {page: currentPage, pageSize}});
+      const response = await api.get(`/projects/${projectId}/logs`, {
+        params: {
+          page: currentPage,
+          pageSize
+        }
+      });
       const newLogs: ActivityLogResponseDto[] = response.data.content || [];
 
       if (newLogs.length < pageSize) {
@@ -103,14 +119,27 @@ const ActivityLogModal: React.FC<ActivityLogModalProps> = ({
                       >
                         {log.actionType === "TODO" ? "📝 Todo" : "📁 Project"}
                       </span>
+            {log.actionType === "TODO" && (
+                <Button
+                    type="primary"
+                    onClick={() => handleRestore(log.todoId, log.snapshotId)}
+                >
+                  복구
+                </Button>
+            )}
             <Typography.Paragraph style={{marginTop: "4px"}}>
               {log.actionDetail}
             </Typography.Paragraph>
 
             {log.actionType === "TODO" && (
-                <Typography.Paragraph type="secondary" style={{marginBottom: "4px"}}>
-                  - [{log.todoTitle}] 버전: {log.todoVersion}
-                </Typography.Paragraph>
+                <>
+                  <Typography.Paragraph type="secondary" style={{marginBottom: "4px"}}>
+                    - [{log.todoTitle}]
+                  </Typography.Paragraph>
+                  <Typography.Paragraph type="secondary" style={{marginBottom: "4px"}}>
+                    - 버전: {log.todoVersion}
+                  </Typography.Paragraph>
+                </>
             )}
             <Typography.Paragraph type="secondary" style={{marginBottom: "4px"}}>
               - 변경자: {log.changerName}
@@ -145,7 +174,7 @@ const ActivityLogModal: React.FC<ActivityLogModalProps> = ({
                   <List
                       height={400}
                       itemCount={itemCount}
-                      itemSize={130}
+                      itemSize={200}
                       width="100%"
                       onItemsRendered={onItemsRendered}
                       ref={ref}
