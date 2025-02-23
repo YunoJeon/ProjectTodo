@@ -39,7 +39,8 @@ const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
   }, [projectId]);
 
   const handleSubmit = (values: any) => {
-    api.put(`/projects/${projectId}`, values)
+    const {id, ...payload} = values;
+    api.put(`/projects/${projectId}`, payload)
     .then(() => {
       message.success("프로젝트가 성공적으로 수정되었습니다.")
       onClose();

@@ -53,7 +53,7 @@ const ProjectCreateModal: React.FC<ProjectCreateModalProps> = ({
           </Form.Item>
           <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading} block>
-                프로젝트 설명
+                프로젝트 생성
               </Button>
           </Form.Item>
         </Form>
