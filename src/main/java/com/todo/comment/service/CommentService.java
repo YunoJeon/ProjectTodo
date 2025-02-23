@@ -7,7 +7,6 @@ import com.todo.collaborator.entity.Collaborator;
 import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.comment.dto.CommentDto;
 import com.todo.comment.dto.CommentResponseDto;
-import com.todo.comment.dto.CommentUpdateDto;
 import com.todo.comment.entity.Comment;
 import com.todo.comment.repository.CommentRepository;
 import com.todo.exception.CustomException;
@@ -89,11 +88,11 @@ public class CommentService {
 
   @Transactional
   public void updateComments(Authentication auth,
-      Long todoId, Long commentId, CommentUpdateDto commentUpdateDto) {
+      Long todoId, Long commentId, CommentDto commentDto) {
 
     Comment comment = validCommentAuthor(auth, todoId, commentId);
 
-    comment.update(commentUpdateDto);
+    comment.update(commentDto);
   }
 
   @Transactional
@@ -121,7 +120,6 @@ public class CommentService {
 
     return comment;
   }
-
 
   private User validCommentAuthor(Authentication auth, Todo todo) {
 

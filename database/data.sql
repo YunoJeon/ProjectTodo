@@ -15,12 +15,12 @@ INSERT INTO todo_db.collaborators (confirm_type, collaborator_id, project_id, ro
 VALUES ('TRUE', 1, 1, 'EDITOR');
 
 # Comments 테이블
-INSERT INTO todo_db.comments (comment_author_id, created_at, deleted_at, parent_comment_id, todo_id, content)
-VALUES (1, NOW(), null, null, 1, '첫 댓글');
+INSERT INTO todo_db.comments (comment_author_id, created_at, todo_id, content)
+VALUES (1, NOW(), 1, '첫 댓글');
 
 # Notifications 테이블
-INSERT INTO todo_db.notifications (is_read, created_at, user_id, message)
-VALUES (false, NOW(), 1, '테스트 알림');
+INSERT INTO todo_db.notifications (is_read, created_at, user_id, message, is_invitation, project_id)
+VALUES (false, NOW(), 1, '테스트 알림', false, 1);
 
 # Snapshots 테이블
 INSERT INTO todo_db.snapshots (is_completed, is_priority, todo_category, due_date, todo_id, version, description, title)

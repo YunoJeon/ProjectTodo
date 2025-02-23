@@ -56,9 +56,7 @@ create table todo_db.comments
 (
     comment_author_id bigint       not null,
     created_at        datetime(6)  null,
-    deleted_at        datetime(6)  null,
     id                bigint auto_increment primary key,
-    parent_comment_id bigint       null,
     todo_id           bigint       not null,
     content           varchar(255) null,
     constraint FKe1y9i9m8qipbmqcjkmoaqqnka
@@ -69,12 +67,13 @@ create table todo_db.comments
 
 create table todo_db.notifications
 (
-    is_read    bit          not null,
-    created_at datetime(6)  null,
-    id         bigint auto_increment
-        primary key,
-    user_id    bigint       not null,
-    message    varchar(255) null,
+    is_invitation bit          not null,
+    is_read       bit          not null,
+    created_at    datetime(6)  null,
+    id            bigint auto_increment primary key,
+    project_id    bigint       null,
+    user_id       bigint       not null,
+    message       varchar(255) null,
     constraint FK9y21adhxn0ayjhfocscqox7bh
         foreign key (user_id) references todo_db.users (id)
 );
@@ -97,8 +96,7 @@ create table if not exists todo_db.snapshots
 create table if not exists todo_db.activity_logs
 (
     created_at    datetime(6)              null,
-    id            bigint auto_increment
-        primary key,
+    id            bigint auto_increment primary key,
     project_id    bigint                   not null,
     snapshot_id   bigint                   null,
     todo_id       bigint                   null,

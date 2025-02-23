@@ -11,7 +11,6 @@ import com.todo.collaborator.entity.Collaborator;
 import com.todo.collaborator.service.CollaboratorQueryService;
 import com.todo.comment.dto.CommentDto;
 import com.todo.comment.dto.CommentResponseDto;
-import com.todo.comment.dto.CommentUpdateDto;
 import com.todo.comment.entity.Comment;
 import com.todo.comment.repository.CommentRepository;
 import com.todo.exception.CustomException;
@@ -68,7 +67,6 @@ class CommentServiceTest {
   private User testUser;
   private Todo todo;
   private Project project;
-  private Collaborator collaborator;
   private Comment comment;
 
   @BeforeEach
@@ -89,12 +87,7 @@ class CommentServiceTest {
 
     project = Project.builder()
         .id(10L)
-        .build();
-
-    collaborator = Collaborator.builder()
-        .id(11L)
-        .collaborator(testUser)
-        .project(project)
+        .owner(testUser)
         .build();
 
     comment = Comment.builder()
@@ -111,10 +104,8 @@ class CommentServiceTest {
     when(todoQueryService.findById(todo.getId())).thenReturn(todo);
     when(projectQueryService.findById(project.getId())).thenReturn(project);
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
-    when(collaboratorQueryService.findByProjectAndCollaboratorIsConfirmed(
-        project, testUser)).thenReturn(collaborator);
     // when
-    commentService.addComment(auth, todo.getId(), new CommentDto(null, "댓글요"));
+    commentService.addComment(auth, todo.getId(), new CommentDto("댓글요"));
     // then
     verify(commentRepository).save(any(Comment.class));
   }
@@ -126,8 +117,6 @@ class CommentServiceTest {
     when(todoQueryService.findById(todo.getId())).thenReturn(todo);
     when(projectQueryService.findById(project.getId())).thenReturn(project);
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
-    when(collaboratorQueryService.findByProjectAndCollaboratorIsConfirmed(
-        project, testUser)).thenReturn(collaborator);
 
     Page<Comment> commentPage = new PageImpl<>(Collections.singletonList(comment),
         PageRequest.of(0, 10), 1);
@@ -146,12 +135,10 @@ class CommentServiceTest {
     when(todoQueryService.findById(todo.getId())).thenReturn(todo);
     when(projectQueryService.findById(project.getId())).thenReturn(project);
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
-    when(collaboratorQueryService.findByProjectAndCollaboratorIsConfirmed(
-        project, testUser)).thenReturn(collaborator);
     when(commentRepository.findById(comment.getId())).thenReturn(Optional.ofNullable(comment));
 
     // when
-    commentService.updateComments(auth, todo.getId(), comment.getId(), new CommentUpdateDto("수정요"));
+    commentService.updateComments(auth, todo.getId(), comment.getId(), new CommentDto("수정요"));
     // then
     assertEquals("수정요", comment.getContent());
   }
@@ -163,8 +150,6 @@ class CommentServiceTest {
     when(todoQueryService.findById(todo.getId())).thenReturn(todo);
     when(projectQueryService.findById(project.getId())).thenReturn(project);
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
-    when(collaboratorQueryService.findByProjectAndCollaboratorIsConfirmed(
-        project, testUser)).thenReturn(collaborator);
 
     User anotherUser = User.builder()
         .id(300L)
@@ -178,7 +163,7 @@ class CommentServiceTest {
     // when
     CustomException e = assertThrows(CustomException.class,
         () -> commentService.updateComments(auth, todo.getId(), anotherComment.getId(),
-            new CommentUpdateDto("수정요")));
+            new CommentDto("수정요")));
     // then
     assertEquals(FORBIDDEN, e.getErrorCode());
   }
