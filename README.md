@@ -235,35 +235,84 @@ npm start
 
 ## 회원가입
 
-https://github.com/user-attachments/assets/7a38f212-c0c9-4a5b-8932-9115accd79ee
+https://github.com/user-attachments/assets/fcf08a76-af8f-46ce-a123-5355e849e0f9
 
 ## 로그인
 
-https://github.com/user-attachments/assets/47c2104b-1e9d-40a9-a4c5-c6e23332773d
+https://github.com/user-attachments/assets/788f35d0-6e40-466b-9d02-e6f7e0f7a099
 
 ## 할일생성
 
-https://github.com/user-attachments/assets/6573bc04-18d1-4e0a-a16c-9375ea7b1cd1
-
-## 무한로딩
-
-https://github.com/user-attachments/assets/91643abe-a8c0-40ff-8342-59f9aba1d676
-
-## 할일 상세 보기 및 수정
-
-https://github.com/user-attachments/assets/587c3645-f5d0-4870-bb98-fffee8444f97
+https://github.com/user-attachments/assets/42e10767-4d59-414f-87d8-a46940cf6d2d
 
 ## 할일 필터링
 
-https://github.com/user-attachments/assets/e0b80db6-8a0c-4508-8e0c-5e5a664c6ec4
+https://github.com/user-attachments/assets/0a9d74a2-ec7b-41ec-98c3-514e0c85b1ea
 
 ## 프로젝트 생성
 
-https://github.com/user-attachments/assets/a195759c-54ef-4341-b192-504bacc1e570
+https://github.com/user-attachments/assets/39d5e6c2-5011-42ad-aaf4-076b29270047
+
+
+## 프로젝트 수정
+
+https://github.com/user-attachments/assets/3efcc176-fd2c-4b7b-aa5a-61106aadb4e9
+
+## 할일 및 프로젝트 검색
+
+https://github.com/user-attachments/assets/eade0109-b76f-49b0-b96f-9f0c370e06ce
 
 ## 사이드바
 
-https://github.com/user-attachments/assets/74a8c148-97e3-4d3f-87b3-4b66eee0513c
+https://github.com/user-attachments/assets/8fc0fbdf-4ecb-4d7d-adca-fc8aef72e652
+
+## 프로젝트 할일 생성
+
+https://github.com/user-attachments/assets/d46ef4ad-4e56-45fd-9fc0-46132fee0dd7
+
+## 프로젝트 할일 수정 및 필터링
+
+https://github.com/user-attachments/assets/ea194bd0-5f40-433d-b539-15f1ee5434fe
+
+## 협업자 목록보기 및 초대
+
+https://github.com/user-attachments/assets/e1a1f0a6-b943-4a11-b64c-1ee15d35be05
+
+## 협업자 초대 승인
+
+https://github.com/user-attachments/assets/d404a054-34fb-457f-bbcf-99b77ef6d30c
+
+## 협업자 Viewer 권한 확인 및 프로젝트 할일 댓글 달기
+
+https://github.com/user-attachments/assets/1136f003-7565-42fc-ae61-e0477763ab6b
+
+## 알림 읽음처리
+
+https://github.com/user-attachments/assets/6276e80d-8259-434f-8a39-503c66ec69c5
+
+## 협업자 권한 수정
+
+https://github.com/user-attachments/assets/ac5d858e-d063-4248-80aa-d5629d4220ef
+
+## 협업자 Editor 권한 확인
+
+https://github.com/user-attachments/assets/3c1eb4e6-8678-41ab-b13f-c02b2a1ef2f9
+
+## 협업자 삭제
+
+https://github.com/user-attachments/assets/3f22dcf1-6e70-410d-9f2d-9c71dffdad60
+
+## 내 정보 조회 및 수정
+
+https://github.com/user-attachments/assets/65162f8f-40f9-483f-bc64-598d5e038361
+
+## 댓글 수정 및 삭제
+
+https://github.com/user-attachments/assets/af38733b-378b-4d47-aaf8-75c87c1b661e
+
+## 
+
+https://github.com/user-attachments/assets/5309a333-ba87-4cda-8849-bb4de08eb1ae
 
 ---
 
