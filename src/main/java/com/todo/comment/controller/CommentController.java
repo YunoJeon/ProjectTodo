@@ -2,7 +2,6 @@ package com.todo.comment.controller;
 
 import com.todo.comment.dto.CommentDto;
 import com.todo.comment.dto.CommentResponseDto;
-import com.todo.comment.dto.CommentUpdateDto;
 import com.todo.comment.service.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -57,9 +56,9 @@ public class CommentController {
   public ResponseEntity<Void> updateComments(Authentication auth,
       @PathVariable(value = "todoId") Long todoId,
       @PathVariable(value = "commentId") Long commentId,
-      @RequestBody CommentUpdateDto commentUpdateDto) {
+      @RequestBody CommentDto commentDto) {
 
-    commentService.updateComments(auth, todoId, commentId, commentUpdateDto);
+    commentService.updateComments(auth, todoId, commentId, commentDto);
 
     return ResponseEntity.ok().build();
   }

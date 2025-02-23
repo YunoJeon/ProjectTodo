@@ -11,7 +11,6 @@ public record CommentResponseDto(
     Long commentAuthorId,
     String commentAuthorProfileImageUrl,
     String commentAuthorName,
-    Long parentCommentId,
     String content,
     LocalDateTime createdAt
 ) {

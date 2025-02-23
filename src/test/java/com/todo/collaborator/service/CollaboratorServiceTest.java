@@ -83,7 +83,7 @@ class CollaboratorServiceTest {
         .build();
 
     collaboratorOwner = Collaborator.of(owner, project, EDITOR, TRUE);
-    collaboratorInvited = Collaborator.of(owner, project, VIEWER, FALSE);
+    collaboratorInvited = Collaborator.of(invitedUser, project, VIEWER, FALSE);
 
     auth = new UsernamePasswordAuthenticationToken(owner.getEmail(), null);
   }

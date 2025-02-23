@@ -5,7 +5,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 import com.todo.comment.dto.CommentDto;
-import com.todo.comment.dto.CommentUpdateDto;
 import com.todo.todo.entity.Todo;
 import com.todo.user.entity.User;
 import jakarta.persistence.Entity;
@@ -58,8 +57,8 @@ public class Comment {
         .build();
   }
 
-  public void update(CommentUpdateDto commentUpdateDto) {
+  public void update(CommentDto commentDto) {
 
-    content = commentUpdateDto.content();
+    content = commentDto.content();
   }
 }

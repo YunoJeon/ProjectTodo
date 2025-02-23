@@ -80,7 +80,7 @@ class UserServiceTest {
   @DisplayName("특정 회원 조회에 성공한다.")
   void get_user_info_success() {
     // given
-    when(userQueryService.findById(testUser.getId())).thenReturn(testUser);
+    when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
     // when
     UserResponseDto responseDto = userService.getUser(testUser.getEmail());
     // then
