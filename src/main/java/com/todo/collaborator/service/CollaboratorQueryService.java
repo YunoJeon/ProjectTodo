@@ -1,5 +1,6 @@
 package com.todo.collaborator.service;
 
+import static com.todo.collaborator.type.ConfirmType.FALSE;
 import static com.todo.collaborator.type.ConfirmType.TRUE;
 import static com.todo.exception.ErrorCode.COLLABORATOR_NOT_FOUND;
 
@@ -45,5 +46,9 @@ public class CollaboratorQueryService {
 
   public Collaborator findByProjectAndCollaboratorIsConfirmed(Project project, User user) {
     return collaboratorRepository.findByProjectAndCollaboratorAndConfirmType(project, user, TRUE);
+  }
+
+  public Collaborator findByProjectAndCollaboratorIsConfirmedFalse(Project project, User user) {
+    return collaboratorRepository.findByProjectAndCollaboratorAndConfirmType(project, user, FALSE);
   }
 }

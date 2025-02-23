@@ -72,7 +72,7 @@ class NotificationServiceTest {
   void save_notification_success() {
     // given
     // when
-    notificationService.saveNotification(testUser, "테스트");
+    notificationService.saveNotification(testUser, "테스트", false, null);
     // then
     verify(notificationRepository).save(any(Notification.class));
   }
@@ -98,7 +98,7 @@ class NotificationServiceTest {
     when(userQueryService.findByEmail(testUser.getEmail())).thenReturn(testUser);
 
     List<Notification> notifications = Collections.singletonList(
-        Notification.of(testUser, "테스트 메세지"));
+        Notification.of(testUser, "테스트 메세지", false, null));
 
     Page<Notification> dtoPage = new PageImpl<>(notifications, PageRequest.of(0, 10),
         notifications.size());

@@ -87,8 +87,24 @@ public class CommentService {
     return new PageImpl<>(dtoList, pageable, commentPage.getTotalElements());
   }
 
+  @Transactional
   public void updateComments(Authentication auth,
       Long todoId, Long commentId, CommentUpdateDto commentUpdateDto) {
+
+    Comment comment = validCommentAuthor(auth, todoId, commentId);
+
+    comment.update(commentUpdateDto);
+  }
+
+  @Transactional
+  public void deleteComments(Authentication auth, Long todoId, Long commentId) {
+
+    Comment comment = validCommentAuthor(auth, todoId, commentId);
+
+    commentRepository.delete(comment);
+  }
+
+  private Comment validCommentAuthor(Authentication auth, Long todoId, Long commentId) {
 
     Pair<Todo, Project> pair = validProject(todoId);
 
@@ -103,23 +119,19 @@ public class CommentService {
       throw new CustomException(FORBIDDEN);
     }
 
-    comment.update(commentUpdateDto);
+    return comment;
   }
 
-  private Pair<Todo, Project> validProject(Long todoId) {
-
-    Todo todo = todoQueryService.findById(todoId);
-
-    Project project = projectQueryService.findById(todo.getProjectId());
-
-    return Pair.of(todo, project);
-  }
 
   private User validCommentAuthor(Authentication auth, Todo todo) {
 
     Project project = projectQueryService.findById(todo.getProjectId());
 
     User commentAuthor = userQueryService.findByEmail(auth.getName());
+
+    if (project.getOwner().getId().equals(commentAuthor.getId())) {
+      return commentAuthor;
+    }
 
     Collaborator collaborator =
         collaboratorQueryService.findByProjectAndCollaboratorIsConfirmed(project, commentAuthor);
@@ -129,5 +141,14 @@ public class CommentService {
       throw new CustomException(FORBIDDEN);
     }
     return collaborator.getCollaborator();
+  }
+
+  private Pair<Todo, Project> validProject(Long todoId) {
+
+    Todo todo = todoQueryService.findById(todoId);
+
+    Project project = projectQueryService.findById(todo.getProjectId());
+
+    return Pair.of(todo, project);
   }
 }

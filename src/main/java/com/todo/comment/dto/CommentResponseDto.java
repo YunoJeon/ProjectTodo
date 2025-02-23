@@ -23,8 +23,7 @@ public record CommentResponseDto(
         .commentAuthorId(comment.getCommentAuthor().getId())
         .commentAuthorProfileImageUrl(comment.getCommentAuthor().getProfileImageUrl())
         .commentAuthorName(comment.getCommentAuthor().getName())
-        .parentCommentId(comment.getParentCommentId())
-        .content(comment.getDeletedAt() == null ? comment.getContent() : "삭제된 댓글입니다.")
+        .content(comment.getContent())
         .createdAt(comment.getCreatedAt())
         .build();
   }

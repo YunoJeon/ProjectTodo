@@ -34,29 +34,29 @@ public class NotificationService {
   private final NotificationQueryService notificationQueryService;
 
   @Transactional
-  public void saveNotification(User user, String message) {
+  public void saveNotification(User user, String message, boolean isInvitation, Long projectId) {
 
-    notificationRepository.save(Notification.of(user, message));
+    notificationRepository.save(Notification.of(user, message, isInvitation, projectId));
   }
 
   public void saveNotificationMultiple(List<User> users, String message) {
 
     for (User user : users) {
-      saveNotification(user, message);
+      saveNotification(user, message, false, null);
     }
   }
 
   public void sendInvitationNotification(User owner, User invitedUser, Project project) {
 
-    String message = String.format("%s 님이 %s 프로젝트에 초대하셨습니다. 참여하시겠습니까?",
+    String message = String.format("\"%s\" 님이 \"%s\" 프로젝트에 초대하셨습니다. 참여하시겠습니까?",
         owner.getName(), project.getName());
 
-    saveNotification(invitedUser, message);
+    saveNotification(invitedUser, message, true, project.getId());
   }
 
   public void notifyUserOnJoin(List<User> users, User invitedUser, Project project) {
 
-    String message = String.format("%s 님이 %s 프로젝트에 참여하였습니다.",
+    String message = String.format("\"%s\" 님이 \"%s\" 프로젝트에 참여하였습니다.",
         invitedUser.getName(), project.getName());
 
     saveNotificationMultiple(users, message);
@@ -64,7 +64,7 @@ public class NotificationService {
 
   public void notifyProjectUserRemoval(List<User> users, User deletedUser, Project project) {
 
-    String message = String.format("%s 님이 %s 프로젝트에서 제외되었습니다.",
+    String message = String.format("\"%s\" 님이 \"%s\" 프로젝트에서 제외되었습니다.",
         deletedUser.getName(), project.getName());
 
     saveNotificationMultiple(users, message);
@@ -72,7 +72,7 @@ public class NotificationService {
 
   public void notifyTodoAddedByOthers(List<User> users, Todo todo, Project project) {
 
-    String message = String.format("%s 프로젝트에 %s Todo 가 생성되었습니다.",
+    String message = String.format("\"%s\" 프로젝트에 \"%s\" Todo 가 생성되었습니다.",
         project.getName(), todo.getTitle());
 
     saveNotificationMultiple(users, message);
@@ -80,7 +80,7 @@ public class NotificationService {
 
   public void notifyTodoStatusChangedByOthers(List<User> users, Todo todo, Project project) {
 
-    String message = String.format("%s 프로젝트의 %s Todo 의 상태가 변경되었습니다.",
+    String message = String.format("\"%s\" 프로젝트의 \"%s\" Todo 의 상태가 변경되었습니다.",
         project.getName(), todo.getTitle());
 
     saveNotificationMultiple(users, message);
@@ -88,7 +88,7 @@ public class NotificationService {
 
   public void notifyCommentAddedByOthers(List<User> users, Todo todo, Project project) {
 
-    String message = String.format("%s 프로젝트의 %s Todo 에 댓글이 추가되었습니다.",
+    String message = String.format("\"%s\" 프로젝트의 \"%s\" Todo 에 댓글이 추가되었습니다.",
         project.getName(), todo.getTitle());
 
     saveNotificationMultiple(users, message);

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,13 +53,24 @@ public class CommentController {
   }
 
   @PutMapping("/{todoId}/comments/{commentId}")
-  @Operation(summary = "댓글 수정 및 삭제 API", description = "특정 투두에 있는 댓글 내용을 수정할 수 있습니다. 또한 삭제 시 soft delete 처리가 됩니다.")
+  @Operation(summary = "댓글 수정 API", description = "특정 투두에 있는 댓글 내용을 수정할 수 있습니다.")
   public ResponseEntity<Void> updateComments(Authentication auth,
       @PathVariable(value = "todoId") Long todoId,
       @PathVariable(value = "commentId") Long commentId,
       @RequestBody CommentUpdateDto commentUpdateDto) {
 
     commentService.updateComments(auth, todoId, commentId, commentUpdateDto);
+
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping("/{todoId}/comments/{commentId}")
+  @Operation(summary = "댓글 삭제 API", description = "특정 투두에 있는 댓글을 삭제할 수 있습니다.")
+  public ResponseEntity<Void> deleteComments(Authentication auth,
+      @PathVariable(value = "todoId") Long todoId,
+      @PathVariable(value = "commentId") Long commentId) {
+
+    commentService.deleteComments(auth, todoId, commentId);
 
     return ResponseEntity.ok().build();
   }

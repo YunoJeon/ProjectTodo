@@ -30,6 +30,7 @@ public record ActivityLogResponseDto(
         .changerName(activityLog.getChangerName())
         .todoId(todoId)
         .todoTitle(todoTitle)
+        .actionType(activityLog.getActionType())
         .todoVersion(activityLog.getTodoVersion())
         .snapshotId(activityLog.getSnapshotId())
         .createdAt(activityLog.getCreatedAt())
