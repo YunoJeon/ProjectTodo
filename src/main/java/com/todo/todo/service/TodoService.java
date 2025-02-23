@@ -165,14 +165,19 @@ public class TodoService {
     Todo todo = todoQueryService.findById(todoId);
 
     Project project = null;
-
-    if (!todo.getAuthor().getId().equals(user.getId())) {
+    if (todo.getProjectId() != null) {
 
       project = projectQueryService.findById(todo.getProjectId());
       validEditorCollaborator(project, user);
     }
 
     todo.update(todoUpdateDto);
+
+    try {
+      entityManager.flush();
+    } catch (OptimisticLockException e) {
+      throw new CustomException(VERSION_CONFLICT);
+    }
 
     if (project != null) {
 
@@ -193,13 +198,7 @@ public class TodoService {
             project, todo, TODO, user.getName(), todo.getVersion(), snapshotId);
       }
     }
-
-    try {
-      entityManager.flush();
-      return TodoResponseDto.fromEntity(todo);
-    } catch (OptimisticLockException e) {
-      throw new CustomException(VERSION_CONFLICT);
-    }
+    return TodoResponseDto.fromEntity(todo);
   }
 
   private void validCollaborator(Project project, User user) {
