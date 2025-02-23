@@ -7,6 +7,7 @@ import TodoCreateModal from "../components/TodoCreateModal";
 import TodoDetailModal from "../components/TodoDetailModal";
 import CollaboratorInviteModal from "../components/CollaboratorInviteModal";
 import CollaboratorsModal from "../components/CollaboratorsModal";
+import ActivityLogModal from "../components/ActivityLogModal";
 
 interface Todo {
   id: number;
@@ -38,6 +39,7 @@ const ProjectTodosPage: React.FC = () => {
   const [selectedTodoId, setSelectedTodoId] = useState<string | null>(null);
   const [inviteModalVisible, setInviteModalVisible] = useState(false);
   const [collaboratorsModalVisible, setCollaboratorsModalVisible] = useState(false);
+  const [activityLogModalVisible, setActivityLogModalVisible] = useState(false);
 
   const fetchTodos = async (currentPage: number) => {
     const params: any = {
@@ -110,6 +112,14 @@ const ProjectTodosPage: React.FC = () => {
       <div style={{padding: "2rem"}}>
         <Typography.Title level={1}>🧑‍💻 협업 & 공동작업 하기</Typography.Title>
         <div style={{marginBottom: "1rem"}}>
+          <div style={{marginBottom: "0.5rem"}}>
+            <Button
+                type="primary"
+                onClick={() => setActivityLogModalVisible(true)}
+            >
+              로그 보기
+            </Button>
+          </div>
           <div style={{
             display: "flex",
             justifyContent: "space-between",
@@ -193,6 +203,12 @@ const ProjectTodosPage: React.FC = () => {
             projectId={numericProjectId}
             visible={collaboratorsModalVisible}
             onClose={() => setCollaboratorsModalVisible(false)}
+        />
+
+        <ActivityLogModal
+            projectId={numericProjectId}
+            visible={activityLogModalVisible}
+            onClose={() => setActivityLogModalVisible(false)}
         />
       </div>
   )
